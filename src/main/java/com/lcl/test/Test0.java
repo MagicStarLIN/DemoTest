@@ -10,6 +10,10 @@ package com.lcl.test;
 public class Test0 {
     public static void main(String[] args) {
         String name = "刘常林lcl";
-        System.out.println(name.length());
+        int i = Integer.MAX_VALUE;
+        int j = Integer.MAX_VALUE;
+
+        System.out.println(i==j);
+
     }
 }
