@@ -1,5 +1,7 @@
 package com.lcl.test;
 
+import java.util.ArrayList;
+
 /**
  * @author liuchanglin
  * @version 1.0
@@ -12,8 +14,13 @@ public class Test0 {
         String name = "刘常林lcl";
         int i = Integer.MAX_VALUE;
         int j = Integer.MAX_VALUE;
+        ArrayList list = new ArrayList();
+        list.add(100);
+        list.add("lcl");
+        for (Object o : list) {
+            System.out.println(o);
 
-        System.out.println(i==j);
+        }
 
     }
 }
