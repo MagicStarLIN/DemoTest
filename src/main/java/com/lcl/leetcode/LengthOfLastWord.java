@@ -5,7 +5,7 @@ package com.lcl.leetcode;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: LengthOfLastWord
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 58. 最后一个单词的长度
  * @date 2019-07-30 10:32
  */
 public class LengthOfLastWord {
@@ -19,11 +19,6 @@ public class LengthOfLastWord {
             return 0;
         }
         return arr[index].toCharArray().length;
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 
     public static void main(String[] args) {

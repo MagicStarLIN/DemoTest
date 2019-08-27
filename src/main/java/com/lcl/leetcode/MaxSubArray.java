@@ -4,7 +4,7 @@ package com.lcl.leetcode;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: MaxSubArray
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 53.最大子序和
  * @date 2019-08-20 10:09
  */
 public class MaxSubArray {

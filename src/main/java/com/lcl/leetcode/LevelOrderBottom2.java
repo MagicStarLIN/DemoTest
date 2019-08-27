@@ -6,7 +6,7 @@ import java.util.*;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: LevelOrderBottom2
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 107. 二叉树的层次遍历2
  * @date 2019-08-13 11:11
  */
 public class LevelOrderBottom2 {

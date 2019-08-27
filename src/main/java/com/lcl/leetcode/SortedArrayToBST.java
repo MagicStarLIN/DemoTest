@@ -6,7 +6,7 @@ import apple.laf.JRSUIUtils;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: SortedArrayToBST
- * @Description:将有序数组转换为二叉搜索树
+ * @Description: 108. 将有序数组转换为二叉搜索树
  * @date 2019-08-19 11:31
  */
 public class SortedArrayToBST {

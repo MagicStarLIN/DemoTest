@@ -6,7 +6,7 @@ import java.util.LinkedList;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: AddBinary
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 67. 二进制求和
  * @date 2019-07-29 09:49
  */
 public class AddBinary {

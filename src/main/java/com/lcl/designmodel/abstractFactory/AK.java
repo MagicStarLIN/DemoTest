@@ -13,4 +13,9 @@ public class AK implements Gun{
     public void shot() {
         System.out.println("AK shot");
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

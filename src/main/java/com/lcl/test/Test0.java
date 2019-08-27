@@ -1,6 +1,7 @@
 package com.lcl.test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author liuchanglin
@@ -11,16 +12,30 @@ import java.util.ArrayList;
  */
 public class Test0 {
     public static void main(String[] args) {
-        String name = "刘常林lcl";
-        int i = Integer.MAX_VALUE;
-        int j = Integer.MAX_VALUE;
-        ArrayList list = new ArrayList();
-        list.add(100);
-        list.add("lcl");
-        for (Object o : list) {
-            System.out.println(o);
+        System.out.println(lengthOfLongestSubstring(" "));
 
+    }
+    public static int lengthOfLongestSubstring(String s) {
+        String a = s;
+        char[] array = a.toCharArray();
+        int b =array.length;
+        int k = 0;
+        if(s =="" || s ==" "){
+            return 1;
+        }else{
+            for(int i = 0;i<b-1;i++){
+                for(int j = i+1; j <=b-1;j++){
+                    if(array[i] == array[j]){
+                        if(j>i && Math.abs(i-j)>k){
+                            k = Math.abs(i-j);
+
+                        }
+                        break;
+                    }
+
+                }
+            }
+            return k;
         }
-
     }
 }
