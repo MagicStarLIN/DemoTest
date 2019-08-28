@@ -5,7 +5,7 @@ package com.lcl.leetcode;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: DeleteDuplicates
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 83.删除链表中重复元素
  * @date 2019-08-05 09:50
  */
 public class DeleteDuplicates {

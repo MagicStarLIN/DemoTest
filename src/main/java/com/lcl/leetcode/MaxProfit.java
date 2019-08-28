@@ -4,7 +4,7 @@ package com.lcl.leetcode;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: MaxProfit
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 买股票的最佳时机1
  * @date 2019-08-27 15:55
  */
 public class MaxProfit {

@@ -4,7 +4,7 @@ package com.lcl.leetcode;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: ClimbStairs
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 动态规划爬楼梯
  * @date 2019-08-20 09:44
  */
 public class ClimbStairs {
