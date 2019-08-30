@@ -37,7 +37,6 @@ public class ReverseList {
             currentNode.next = headNode;
             headNode = currentNode;
             currentNode = nextNode;
-            nextNode = nextNode.next;
         }
         head.next = null;
         return headNode;
