@@ -8,7 +8,9 @@ package com.lcl.leetcode;
  * @date 2019/8/30 4:34 下午
  */
 public class ListNode {
-      int val;
-     ListNode next;
-      ListNode(int x) { val = x; }
-  }
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
+    }
+}
