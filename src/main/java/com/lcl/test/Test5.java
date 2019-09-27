@@ -8,10 +8,10 @@ package com.lcl.test;
  * @date 2019-08-06 17:59
  */
 public class Test5 {
-    public static void main(String[] args) {
+    public static void test(String[] args) {
         // TODO Auto-generated method stub
-        Student s1 = new Student("小张");
-        Student s2 = new Student("小李");
+        Student s1 = new Student();
+        Student s2 = new Student();
         Test5.swap(s1, s2);
         System.out.println("s1:" + s1.getName());
 //        System.out.println("s1:" + s1);
