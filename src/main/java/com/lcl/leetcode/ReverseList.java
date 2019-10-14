@@ -8,14 +8,14 @@ package com.lcl.leetcode;
  * @date 2019-08-21 09:57
  */
 public class ReverseList {
-    class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
+//    class ListNode {
+//        int val;
+//        ListNode next;
+//
+//        ListNode(int x) {
+//            val = x;
+//        }
+//    }
     /*
      * @Title reverseListwithcycle
      * @Description
