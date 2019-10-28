@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: CrawlerDemo
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 爬虫demo
  * @date 2019/10/10 10:28 上午
  */
 public class CrawlerDemo {

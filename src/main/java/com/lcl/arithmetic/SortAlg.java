@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: BubbleSort
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 排序算法
  * @date 2019-08-15 16:16
  */
 public class SortAlg {

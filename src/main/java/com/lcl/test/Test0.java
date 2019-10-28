@@ -12,11 +12,9 @@ import java.util.stream.Collectors;
  */
 public class Test0 {
     public static void main(String[] args) {
-        String a = "lcl";
-        String b = a;
-        a = "ccc";
-        System.out.println(a);
-        System.out.println(b);
+        for (int i = 0; i < 257; i++) {
+            System.out.print("我");
+        }
     }
 
 }

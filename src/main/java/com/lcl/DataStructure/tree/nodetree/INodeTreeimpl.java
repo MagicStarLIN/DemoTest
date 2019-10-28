@@ -4,7 +4,7 @@ package com.lcl.DataStructure.tree.nodetree;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: INodTreeimpl
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: 树的操作
  * @date 2019-07-12 10:49
  */
 public class INodeTreeimpl implements INodeTree {
