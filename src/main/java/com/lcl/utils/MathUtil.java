@@ -2,6 +2,7 @@ package com.lcl.utils;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * @author liuchanglin
@@ -10,7 +11,34 @@ import java.util.Arrays;
  * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019/10/28 3:26 下午
  */
-public class MathUtils {
+public class MathUtil {
+    private static Random random = new Random();
+
+    public static int getValue(int step){
+        return random.nextInt(step);
+    }
+    public static int positive(int number){
+        number = number < 0 ? (number*(-1)) : number;
+        return number;
+    }
+
+    public static int boolTypeRandom (){
+        return new java.util.Random().nextBoolean() ? 1 : 0;
+    }
+    public static double getDoubleRandomNum() {
+        return Math.random();
+    }
+    /**
+     * @Title: getRandomNum
+     * @Description: 获取随机数
+     * @return int    返回类型
+     * @date 2019年2月12日 下午5:16:39
+     * @param length  随机数的位数
+     * @return
+     */
+    public static int getRandomNum(int length){
+        return (int) ((Math.random() * 9 + 1) * (Math.pow(10,length-1)));
+    }
     /**
      * @Title hexStringToByte
      * @Description 十六进制转二进制byte数组
@@ -63,10 +91,11 @@ public class MathUtils {
     }
 
     public static void main(String[] args) {
-        //11111110 11101111 11110101
+//        11111110 11101111 11110101
 //       System.out.println(bytesToHexString(hexStringToByte("feeff5")));
-        System.err.println(hexStr2Byte("feeff5"));
-        System.err.println(Integer.toBinaryString(Integer.parseInt("feeff5",16)));
+        for (int i = 0; i < 20; i++) {
+            System.err.println(getRandomMaxten());
+        }
     }
 
     /**
@@ -115,4 +144,12 @@ public class MathUtils {
         }
         return stringBuilder.toString();
     }
+
+    public static int getRandomMaxten() {
+        return (int) Math.ceil(getDoubleRandomNum() * 9);
+    }
+
+
+
+
 }

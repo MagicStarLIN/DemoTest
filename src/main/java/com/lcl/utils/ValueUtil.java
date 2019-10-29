@@ -16,8 +16,35 @@ public class ValueUtil {
      * @Param [vector1, vector2, lambda]
      * @return int[]
      **/
-    public static int[] LinearEvaluation(int[] vector1,int vector2,float lambda) {
+    public static int[] LinearEvaluation(int[] vector1,int[] vector2,double lambda) {
+        int[] result = new int[vector1.length];
+        for (int i : vector1) {
 
-        return null;
+            i = (int) Math.round (i * lambda);
+        }
+        for (int i : vector2) {
+            i = (int) Math.round(i * (1-lambda));
+        }
+        for (int i = 0; i < vector1.length; i++) {
+            result[i] = vector1[i] + vector2[2];
+        }
+        return result;
+    }
+    /**
+     * @Title LinearEvaluation
+     * @Description 单一值向量线性求值
+     * @Author liuchanglin
+     * @Date 2019/10/28 5:29 下午
+     * @Param [value1, value2, lambda]
+     * @return int
+     **/
+    public static int SinggleLinearEvaluation(int value1, int value2, float lambda) {
+        return Math.round (lambda * value1 + (1 - lambda) * value2);
+    }
+
+
+    public static void main(String[] args) {
+        double a = 1.63254;
+        System.err.println((int) Math.round(a));
     }
 }
