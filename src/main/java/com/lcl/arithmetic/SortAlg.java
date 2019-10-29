@@ -145,7 +145,54 @@ public class SortAlg {
             QuickSort(array, middle + 1, end);
         }
     }
+    /*-----------桶排序--------------*/
+    private static int getmax(int[] array){
+        int max = -1;
+        for(int tmp:array){
+            if(tmp>max){
+                max = tmp;
+            }
+        }
+        return max;
+    }
+    public static void bucketsort(int[] array){
+        //[1]找到原始数组array中的最大值
+        int max = getmax(array);
 
+        //[2]创建桶数组，桶数组的最大下标是max，原始数组中的最大值
+        int[] bucketArray = new int[max+1];
 
+        //[3]再次遍历原始数组，将原始数组中的所有元素，放在其取值对应的下标的桶当中
+        for(int tmp:array){
+            bucketArray[tmp]++;
+        }
+        //[4]遍历桶数组，将桶中的所有小球（原始数组的元素）返回到原始数组中
+        int arrayIndex = 0;
+        for(int i=0;i<bucketArray.length;i++){
+            while(bucketArray[i]>0){
+                array[arrayIndex++] = i;
+                bucketArray[i]--;
+            }
+        }
+    }
+    /*------------------希尔排序------------------*/
+    public static void Insertionsort(int[] array,int start,int step){
+        int tmp=0;
+        for(int i=start+step;i<array.length;i+=step){
+            for(int j=i-step;j>=start&&array[j]>array[j+step];j-=step){
+                tmp = array[j];
+                array[j] = array[j+step];
+                array[j+step] = tmp;
+            }
+        }
+    }
+    public static void shellsort(int[] array){
+        for(int step = 5; step >= 1; step /= 2) {  //外层循环控制步长
+            for(int start = 0; start < step; start++) {  //内层循环控制每一次分组的起点下标
+                Insertionsort(array, start, step);  //组内插值排序
+            }
+        }
+
+    }
 
 }
