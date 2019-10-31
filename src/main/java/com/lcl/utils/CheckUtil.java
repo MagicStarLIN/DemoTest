@@ -1,45 +1,28 @@
-package com.lcl.test;
+package com.lcl.utils;
 
-import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * @author liuchanglin
  * @version 1.0
- * @ClassName: nono
+ * @ClassName: CheckUtil
  * @Description: TODO(这里用一句话描述这个类的作用)
- * @date 2019-08-27 16:51
+ * @date 2019/10/31 9:29 上午
  */
-public class Test0 {
-//    ^(\\d{6})(19|20)(\\d{2})(1[0-2]|0[1-9])(0[1-9]|[1-2][0-9]|3[0-1])(\\d{3})(\\d|X|x)?$
-//    /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-    public static void main(String[] args) {
-//        boolean flag = match("^(\\d{6})(19|20)(\\d{2})(1[0-2]|0[1-9])(0[1-9]|[1-2][0-9]|3[0-1])(\\d{3})(\\d|X|x)?$", "1302301998072227123");
-        boolean flag2 = checkBankCard("6212263500044678593");
-        System.err.println(flag2);
-    }
-    private static boolean match(String regex, String str) {
-        return Pattern.compile(regex).matcher(str).matches();
-    }
-
+public class CheckUtil {
     /**
-     * 校验银行卡卡号
-     *
-     * @param cardId
-     * @return
-     */
-    private static boolean checkBankCard(String cardId) {
+     * @Title checkBankCard
+     * @Description luhm算法检验银行卡号
+     * @Author liuchanglin
+     * @Date 2019/10/31 9:30 上午
+     * @Param [cardId]
+     * @return boolean
+     **/
+    public static boolean checkBankCard(String cardId) {
         char bit = getBankCardCheckCode(cardId
                 .substring(0, cardId.length() - 1));
         return cardId.charAt(cardId.length() - 1) == bit;
     }
-    /**
-     * 从不含校验位的银行卡卡号采用 Luhm 校验算法获得校验位
-     *
-     * @param nonCheckCodeCardId
-     * @return
-     */
     private static char getBankCardCheckCode(String nonCheckCodeCardId) {
         int cardLenth = nonCheckCodeCardId.trim().length();
         if (nonCheckCodeCardId == null || cardLenth == 0
@@ -57,5 +40,17 @@ public class Test0 {
             luhmSum += k;
         }
         return (luhmSum % 10 == 0) ? '0' : (char) ((10 - luhmSum % 10) + '0');
+    }
+
+    /**
+     * @Title regexMatch
+     * @Description 正则表达式检验
+     * @Author liuchanglin
+     * @Date 2019/10/31 9:31 上午
+     * @Param [regex, str]
+     * @return boolean
+     **/
+    public static boolean regexMatch(String regex, String str) {
+        return Pattern.compile(regex).matcher(str).matches();
     }
 }
