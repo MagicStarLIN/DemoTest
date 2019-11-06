@@ -148,6 +148,13 @@ public class MathUtil {
      **/
     public static int[] rgbhex2decimal(String rgbCode) {
         String rgbs = Integer.toBinaryString(Integer.parseInt(rgbCode, 16));
+
+        int length = rgbs.length();
+        if (length < 24) {
+            for (int j = 0; j < 24 - length; j++) {
+                rgbs = "0" + rgbs;
+            }
+        }
         String rgb1 = rgbs.substring(0, 8);
         String rgb2 = rgbs.substring(8, 16);
         String rgb3 = rgbs.substring(16, 24);
