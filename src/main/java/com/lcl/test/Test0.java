@@ -23,19 +23,10 @@ public class Test0 {
         }
     }
     public static void main(String[] args) {
-        listAddData(list);
-
-        List<Integer> l1 = list.subList(0, 10);
-        List<Integer> l2 = list.subList(10, list.size());
-
-        for (Integer integer : l1) {
-            System.err.println("l1:"+integer);
-        }
-
-        for (Integer integer : l2) {
-            System.err.println("l2:"+integer);
-
-        }
+        String rgb = "rgb";
+        String textrgb = "textrgb";
+        String wordtag = "wordtag";
+        System.err.println("<span style=\"background-color:"+rgb+" color:"+textrgb+"\";>"+wordtag+"</span>");
     }
 
 

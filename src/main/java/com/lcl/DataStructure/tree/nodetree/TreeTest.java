@@ -4,7 +4,6 @@ package com.lcl.DataStructure.tree.nodetree;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: TreeTest
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-07-12 14:42
  */
 public class TreeTest {
