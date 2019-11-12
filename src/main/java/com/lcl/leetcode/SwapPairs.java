@@ -14,19 +14,20 @@ public class SwapPairs {
     private static ListNode swapPairs(ListNode head) {
         ListNode headNode = head;
         ListNode currentNode = head.next;
+        int currentflag = 2;
         ListNode nextNode;
         head = currentNode;
-        int index = 0;
+
+
         while (currentNode.next != null) {
-            if (index % 2 == 0) {
+            if (currentflag++ % 2 == 0) {
                 nextNode = currentNode.next;
                 currentNode.next = headNode;
                 headNode.next = nextNode;
-
             }
+
             headNode = currentNode;
             currentNode = headNode.next;
-            index++;
         }
         //TODO 第二次不交换情况下，还需要将两对节点之间进行连接
         return head;

@@ -43,4 +43,8 @@ public class ValueUtil {
         return Math.round (lambda * value1 + (1 - lambda) * value2);
     }
 
+//    public static boolean checkField(String labels, String markedlabels) {
+//        //markedlabels
+//    }
+
 }
