@@ -65,9 +65,10 @@ public class ValueUtil {
 //        Map<String, String> m2 = new HashMap<String, String>();
 
         for (Map.Entry<String, Integer> entry1 : m1.entrySet()) {
-            Integer m1value = entry1.getValue() == null ? 0 : entry1.getValue();
-            Integer m2value = m2.get(entry1.getKey()) == null ? 0 : m2.get(entry1.getKey());
-            if (!(m1value == m2value)) {//若两个map中相同key对应的value不相等
+//            Integer m1value = entry1.getValue() == null ? 0 : entry1.getValue();
+            Integer m1value = m1.get(entry1.getKey());
+            Integer m2value = m2.get(entry1.getKey());
+            if (m1value != m2value) {//若两个map中相同key对应的value不相等
                 return false;
             }
         }
