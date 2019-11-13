@@ -1,5 +1,8 @@
 package com.lcl.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author liuchanglin
  * @version 1.0
@@ -43,8 +46,60 @@ public class ValueUtil {
         return Math.round (lambda * value1 + (1 - lambda) * value2);
     }
 
-//    public static boolean checkField(String labels, String markedlabels) {
-//        //markedlabels
-//    }
+    public static void checkField(String labels) {
+        Map<String, Integer> label = (Map<String, Integer>) JsonUtils.jsonToObj(labels, HashMap.class);
+        for (Map.Entry<String, Integer> entry : label.entrySet()) {
+            System.out.println("key = " + entry.getKey() + ", value = " + entry.getValue());
+        }
+    }
+    /**
+     * @Title compareMap3
+     * @Description 以第一个map为标准作为对比，将俩个map对比，使用时应当将两个参数调换位置使用两次做&&运算
+     * @Author liuchanglin
+     * @Date 2019/11/13 10:47 上午
+     * @Param [m1, m2]
+     * @return boolean
+     **/
+    public static boolean compareMap3(Map<String, Integer> m1,Map<String, Integer> m2) {
+//        Map<String, String> m1 = new HashMap<String, String>();
+//        Map<String, String> m2 = new HashMap<String, String>();
+
+        for (Map.Entry<String, Integer> entry1 : m1.entrySet()) {
+            Integer m1value = entry1.getValue() == null ? 0 : entry1.getValue();
+            Integer m2value = m2.get(entry1.getKey()) == null ? 0 : m2.get(entry1.getKey());
+            if (!(m1value == m2value)) {//若两个map中相同key对应的value不相等
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * {
+     *   "建材":1,
+     *   "电子产品":0
+     * }
+     *
+     *
+
+     * @param args
+     */
+
+
+        public static void main(String[] args) {
+            Map<String, Integer> label1 = (Map<String, Integer>) JsonUtils.jsonToObj("    {\n" +
+                    "        \"建材\":1,\n" +
+                    "        \"电子产品\":0\n" +
+                    "    }", HashMap.class);
+
+            Map<String, Integer> label2 = (Map<String, Integer>) JsonUtils.jsonToObj("{\n" +
+                    "  \"建材\":1,\n" +
+                    "  \"电子产品\":0,\n" +
+                    "  \"母婴产品\":0\n" +
+                    "}", HashMap.class);
+
+            System.err.println(compareMap3(label1,label2));
+
+        }
 
 }
