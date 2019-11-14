@@ -80,9 +80,6 @@ public class ValueUtil {
      *   "建材":1,
      *   "电子产品":0
      * }
-     *
-     *
-
      * @param args
      */
 
