@@ -71,7 +71,7 @@ public class HighLightUtils {
     }
     /**
      * @Title highLightContentSameArea
-     * @Description 非跨域标记高亮
+     * @Description 非跨标签标记高亮
      * @Author liuchanglin
      * @Date 2019/11/14 7:56 下午
      * @Param [content, keyword]
@@ -83,7 +83,7 @@ public class HighLightUtils {
     }
     /**
      * @Title cancelhighLightContentSameArea
-     * @Description 非跨域取消标记高亮
+     * @Description 非跨标签取消标记高亮
      * @Author liuchanglin
      * @Date 2019/11/14 7:56 下午
      * @Param [content, keyword]
@@ -94,7 +94,4 @@ public class HighLightUtils {
         return content.replace("<span style=\"background:red\">" + keyword + "</span>", keyword);
     }
 
-    public static void main(String[] args) {
-        System.err.println(cancelhighLightContentSameArea("1<span style=\"background:red\">2</span>3","2"));
-    }
 }

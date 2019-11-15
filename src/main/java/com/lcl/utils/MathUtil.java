@@ -1,5 +1,6 @@
 package com.lcl.utils;
 
+import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Random;
@@ -180,6 +181,19 @@ public class MathUtil {
         Integer i = Integer.parseInt(value.trim(), 2);
         return Integer.toHexString(i);
 
+    }
+    /**
+     * @Title Fractionalmulti
+     * @Description 小数乘法保证准确
+     * @Author liuchanglin
+     * @Date 2019/11/15 2:12 下午
+     * @Param [num1, num2]
+     * @return float
+     **/
+    public static float Fractionalmulti(float num1, float num2) {
+        BigDecimal bigDecimal1 = new BigDecimal(num1);
+        BigDecimal bigDecimal2 = new BigDecimal(num2);
+        return bigDecimal1.multiply(bigDecimal2).floatValue();
     }
 
     public static void main(String[] args) {
