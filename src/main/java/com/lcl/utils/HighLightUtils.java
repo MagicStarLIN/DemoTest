@@ -1,5 +1,10 @@
 package com.lcl.utils;
 
+import com.sun.org.apache.xpath.internal.compiler.Keywords;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,4 +99,58 @@ public class HighLightUtils {
         return content.replace("<span style=\"background:red\">" + keyword + "</span>", keyword);
     }
 
+    private static Element parseHtml(String content, String id) {
+        Document document = Jsoup.parse(content);
+        return document.getElementById(id);
+    }
+
+
+
+    private static String html = "<div id=\"1\"> 沂水县沂城街道社区卫生服务中心维生素C片交易公告 <p id=\"2\">发布时间：2018-06-19 17:20</p>\n" +
+            "    <div id=\"3\">\n" +
+            "        <div id=\"4\">医院名称：沂水县沂城街道社区卫生服务中心； 药品名称：维生素C片；采购量：300</div>\n" +
+            "    </div>\n" +
+            "</div>信息来源：http://www.ggzy.gov.cn/";
+
+//    String content="<div>招标单位：12121212</div>";
+//    Document doc = Jsoup.parse(content);
+//    Elements divS = doc.getElementsByTag("DIV");
+//        for (Element div : divS) {
+//        String text = div.text();
+//        text=text.replace("招标单位：","");
+//        div.html("<span>招标单位：</span>"+text);
+//    }
+
+    private static String mark(String content, String startId, String endId, String[] keyWords, String color) {
+        Document document = Jsoup.parse(html);
+        int start = Integer.parseInt(startId);
+        int end = Integer.parseInt(endId);
+        int i = 0;
+        for (int j = start; j <= end; j++) {
+            String originText = parseHtml(content, String.valueOf(start)).text();
+            for (int k = i ; k < keyWords.length ; k++) {
+                if (originText.contains(keyWords[k])) {
+                    content =
+                            parseHtml(content,String.valueOf(j))
+                                    .html(originText.replace(keyWords[i],"<span style=\"background:"+color+"\">" + keyWords[i] + "</span>"))
+                            .ownerDocument().outerHtml();
+                    i++;
+                    break;
+                }
+
+            }
+        }
+        return content;
+    }
+
+
+    private static String[] keyWords = {"交易公告","发布时间：2018-06-19 17:20","医院名称"};
+
+    public static void main(String[] args) {
+        String result = mark(html, "1", "4", keyWords, "red");
+        System.err.println(result);
+//        Document document = Jsoup.parse(html).getElementById("4").text("123124").ownerDocument();
+//        String afterDeal = document.outerHtml();
+//        System.err.println(afterDeal);
+    }
 }
