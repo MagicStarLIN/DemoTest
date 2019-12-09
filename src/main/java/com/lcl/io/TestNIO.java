@@ -9,7 +9,7 @@ import java.nio.charset.Charset;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: TestNIO
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: testNIO
  * @date 2019-08-19 14:49
  */
 public class TestNIO {

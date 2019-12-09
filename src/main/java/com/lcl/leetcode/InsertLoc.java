@@ -4,7 +4,7 @@ package com.lcl.leetcode;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: InsertLoc
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @Description: ..
  * @date 2019-07-25 14:14
  */
 public class InsertLoc {
