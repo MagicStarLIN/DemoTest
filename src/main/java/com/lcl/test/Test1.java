@@ -7,7 +7,6 @@ import java.util.Scanner;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: Test1
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-08-03 15:21
  */
 public class Test1 {

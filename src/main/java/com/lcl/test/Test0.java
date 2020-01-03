@@ -7,8 +7,7 @@ import java.util.stream.Collectors;
 /**
  * @author liuchanglin
  * @version 1.0
- * @ClassName: nono
- * @Description: TODO(这里用一句话描述这个类的作用)
+ * @ClassName: Test0
  * @date 2019-08-27 16:51
  */
 public class Test0 {
@@ -57,13 +56,13 @@ public class Test0 {
         }
         return content.replace(htmlForm,newHtml);
     }
-    public static String cancelhighLightContentSameArea(String content, String keyword) {
+    public static String cancelHighLightContentSameArea(String content, String keyword) {
 //        String newKeyword = keyword.replace( ,keyword);
         return content.replace("<span style=\"background:red\">" + keyword + "</span>", keyword);
     }
 
     public static void main(String[] args) {
-        String result = cancelhighLightContentSameArea("1231221341234<span style=\"background:red\">" + "1231231" + "</span>", "231");
+        String result = cancelHighLightContentSameArea("1231221341234<span style=\"background:red\">" + "1231231" + "</span>", "231");
         System.err.println(result);
 
     }

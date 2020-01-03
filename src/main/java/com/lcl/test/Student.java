@@ -1,5 +1,6 @@
 package com.lcl.test;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Objects;
@@ -12,6 +13,7 @@ import java.util.Objects;
  * @date 2019-08-06 18:00
  */
 @Data
+@Builder
 public class Student {
     private String name;
 
@@ -35,6 +37,15 @@ public class Student {
         if (!(o instanceof Student)) return false;
         Student student = (Student) o;
         return Objects.equals(getId(), student.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", sex=" + sex +
+                '}';
     }
 
     @Override
