@@ -1,7 +1,5 @@
 package com.lcl.DataStructure.tree.nodetree;
 
-import com.lcl.DataStructure.tree.nodetree.Node;
-
 public interface INodeTree {
     //查找节点
     Node findNode(int key,Node root);

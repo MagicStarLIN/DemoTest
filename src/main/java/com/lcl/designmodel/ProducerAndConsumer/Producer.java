@@ -7,7 +7,6 @@ import java.util.Random;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: Producer
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-07-17 14:15
  */
 public class Producer extends Thread{

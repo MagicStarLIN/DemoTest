@@ -1,8 +1,5 @@
 package com.lcl.designmodel.proxy.proxydemo;
 
-import sun.misc.ProxyGenerator;
-
-import java.io.FileOutputStream;
 import java.lang.reflect.Proxy;
 
 /**

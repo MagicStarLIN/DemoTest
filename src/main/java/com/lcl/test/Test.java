@@ -1,11 +1,6 @@
 package com.lcl.test;
 
-import com.alibaba.excel.EasyExcel;
-
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Date;
 
 /**
  * @author liuchanglin
@@ -34,6 +29,13 @@ public class Test {
 
     private static void changeStudent(Student student) {
          student = new Student("lsy", "34", 0);
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 200; i++) {
+            System.err.print("测试");
+
+        }
     }
 
 }

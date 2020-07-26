@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class Test0 {
 //    ^(\\d{6})(19|20)(\\d{2})(1[0-2]|0[1-9])(0[1-9]|[1-2][0-9]|3[0-1])(\\d{3})(\\d|X|x)?$
 //    /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-
+    public static final int TEST_NUMBER = 1;
     static List<Integer> list = new ArrayList<>();
 
     private static void listAddData(List<Integer> list) {

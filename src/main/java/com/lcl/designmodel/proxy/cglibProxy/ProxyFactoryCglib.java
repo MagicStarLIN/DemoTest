@@ -1,7 +1,6 @@
 package com.lcl.designmodel.proxy.cglibProxy;
 
 
-import org.junit.jupiter.api.Test;
 import org.springframework.cglib.proxy.Enhancer;
 import org.springframework.cglib.proxy.MethodInterceptor;
 import org.springframework.cglib.proxy.MethodProxy;

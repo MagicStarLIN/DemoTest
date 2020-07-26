@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: ProxyHandler
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-07-11 14:04
  */
 public class ProxyHandler implements InvocationHandler {
