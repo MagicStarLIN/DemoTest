@@ -1,4 +1,4 @@
-package com.lcl.Socket;
+package com.lcl.Socket.bioSocket;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,6 @@ import java.net.Socket;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: SocketServer
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019/10/9 5:07 下午
  */
 public class SocketServer {

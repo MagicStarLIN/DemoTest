@@ -1,4 +1,4 @@
-package com.lcl.designmodel.ProducerAndConsumer;
+package com.lcl.designmodel.producerAndConsumer;
 
 import java.util.Queue;
 import java.util.Random;
@@ -6,17 +6,16 @@ import java.util.Random;
 /**
  * @author liuchanglin
  * @version 1.0
- * @ClassName: Producer
- * @date 2019-07-17 14:15
+ * @ClassName: Consumer
+ * @Description: 消费者
+ * @date 2019-07-17 15:08
  */
-public class Producer extends Thread{
+public class Consumer extends Thread {
     private Queue<Integer> queue;
     String name;
     int maxSize;
-    int i = 0;
 
-    public Producer(Queue<Integer> queue, String name, int maxSize) {
-        super(name);
+    public Consumer(Queue<Integer> queue, String name, int maxSize) {
         this.queue = queue;
         this.name = name;
         this.maxSize = maxSize;
@@ -26,16 +25,17 @@ public class Producer extends Thread{
     public void run() {
         while (true) {
             synchronized (queue) {
-                while (queue.size() == maxSize) {
+                while (queue.isEmpty()) {
+                        System.out.println("Queue is empty, Consumer[" + name + "] thread is waiting for Producer");
                     try {
-                        System.out.println("Queue is full, Producer[" + name + "] thread waiting for " + "consumer to take something from queue.");
                         queue.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                 }
-                System.out.println("[" + name + "] Producing value : +" + i);
-                queue.offer(i++);
+                int x = queue.poll();
+                System.out.println("[" + name + "] Consuming value : " + x);
                 queue.notifyAll();
 
                 try {

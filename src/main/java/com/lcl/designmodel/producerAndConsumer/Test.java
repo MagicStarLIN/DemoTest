@@ -1,4 +1,4 @@
-package com.lcl.designmodel.ProducerAndConsumer;
+package com.lcl.designmodel.producerAndConsumer;
 
 import java.util.LinkedList;
 import java.util.Queue;

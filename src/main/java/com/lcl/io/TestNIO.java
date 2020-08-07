@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author liuchanglin
@@ -23,7 +24,7 @@ public class TestNIO {
             //[3]将数据从通道读到缓冲区
             int result = fileChannel.read(byteBuffer);
                 byteBuffer.flip();
-                System.out.println(Charset.forName("utf-8").decode(byteBuffer));
+                System.out.println(StandardCharsets.UTF_8.decode(byteBuffer));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -39,7 +40,7 @@ public class TestNIO {
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
             String message = "lcl";
-            byte[] bytesmessage = message.getBytes("utf-8");
+            byte[] bytesmessage = message.getBytes(StandardCharsets.UTF_8);
             for (int i = 0; i < bytesmessage.length; i++) {
                 byteBuffer.put(bytesmessage[i]);
             }

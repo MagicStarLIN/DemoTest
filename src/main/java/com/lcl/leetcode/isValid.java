@@ -6,7 +6,6 @@ import java.util.Stack;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: isValid
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-07-24 10:09
  */
 public class isValid {

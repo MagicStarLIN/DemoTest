@@ -1,6 +1,5 @@
-package com.lcl.Thread.threadpool;
+package com.lcl.thread.threadpool;
 
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

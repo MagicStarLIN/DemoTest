@@ -1,4 +1,4 @@
-package com.lcl.Thread;
+package com.lcl.thread;
 
 import java.util.concurrent.atomic.AtomicReference;
 

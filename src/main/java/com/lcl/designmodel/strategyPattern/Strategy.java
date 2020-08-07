@@ -1,4 +1,4 @@
-package com.lcl.designmodel.StrategyPattern;
+package com.lcl.designmodel.strategyPattern;
 
 /**
  * 抽象策略角色

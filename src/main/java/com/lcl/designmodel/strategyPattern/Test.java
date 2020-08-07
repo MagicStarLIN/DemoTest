@@ -1,7 +1,4 @@
-package com.lcl.designmodel.StrategyPattern;
-
-import java.util.ArrayList;
-import java.util.Arrays;
+package com.lcl.designmodel.strategyPattern;
 
 /**
  * @author liuchanglin

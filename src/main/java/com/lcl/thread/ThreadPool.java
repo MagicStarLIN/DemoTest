@@ -1,6 +1,4 @@
-package com.lcl.Thread;
-
-import java.util.concurrent.Executor;
+package com.lcl.thread;
 
 /**
  * @author liuchanglin

@@ -1,4 +1,4 @@
-package com.lcl.Thread;
+package com.lcl.thread;
 
 public class DeadLockDemo {
     private static String A = "A";
