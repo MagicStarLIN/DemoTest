@@ -1,6 +1,7 @@
 package com.lcl.test;
 
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * @author liuchanglin
@@ -32,16 +33,16 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        int i = Runtime.getRuntime().availableProcessors();
-        System.err.println(i);
-//        String phones = "106083560，106083998，106085567，106087227，106087534，106088220，106088702，106089003，106090152，106090458，106090924，106091518，106092824，106093128，106093377，106093618，106093991，106094314，106094569，106094861，106095092，106095320，106095562，106095846，106096108，106096433，58353398，51885187";
-//        String[] phoneArr = phones.split("，");
-//        for (String s : phoneArr) {
-//            System.err.println(s);
-//        }
+        System.err.println(new Date().getTime());
+//        System.err.println(compareDate());
 
     }
 
+    private static int compareDate(Date d1, Date d2) {
+        long dif = d1.getTime() - d2.getTime();
+
+        return Integer.parseInt(String.valueOf(dif));
+    }
 
     private static long modLong(long temp) {
         return temp % 10;
