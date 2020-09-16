@@ -1,8 +1,5 @@
 package com.lcl.test;
 
-import com.sun.tools.internal.xjc.model.CElement;
-
-import java.util.Arrays;
 import java.util.Scanner;
 
 /**

@@ -20,17 +20,17 @@ public class EchoServer {
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
             System.err.println("Usage: " + EchoServer.class.getSimpleName() + " <port>");
-            int port = Integer.parseInt(args[0]);
-            new EchoServer(port).start();
         }
+        int port = Integer.parseInt(args[0]);
+            new EchoServer(port).start();
     }
 
     public void start() throws Exception {
         final EchoServerHandler serverHandler = new EchoServerHandler();
         EventLoopGroup group = new NioEventLoopGroup();
         try {
-            ServerBootstrap b = new ServerBootstrap();
-            b.group(group)
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(group)
                     .channel(NioServerSocketChannel.class)
                     .localAddress(new InetSocketAddress(port))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -39,8 +39,8 @@ public class EchoServer {
                             socketChannel.pipeline().addLast(serverHandler);
                         }
                     });
-            ChannelFuture f = b.bind().sync();
-            f.channel().closeFuture().sync();
+            ChannelFuture channelFuture = serverBootstrap.bind().sync();
+            channelFuture.channel().closeFuture().sync();
         } finally {
             group.shutdownGracefully().sync();
         }

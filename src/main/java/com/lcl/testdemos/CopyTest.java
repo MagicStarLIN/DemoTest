@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicIntegerArray;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: CopyTest
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-08-13 14:05
  */
 public class CopyTest {

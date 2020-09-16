@@ -4,12 +4,10 @@ package com.lcl.test;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: Test5
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-08-06 17:59
  */
 public class Test5 {
     public static void test(String[] args) {
-        // TODO Auto-generated method stub
         Student s1 = new Student();
         Student s2 = new Student();
         Test5.swap(s1, s2);

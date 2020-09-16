@@ -6,7 +6,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: UnreentrantLock
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019-08-12 14:43
  */
 public class UnreentrantLock {
