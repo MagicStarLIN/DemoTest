@@ -21,19 +21,23 @@ public class Test {
 //        arr = {4, 3, 2, 1};
         i = 2;
     }
+//
+//    private static void testMethod2() {
+//        Student student = new Student("lcl", "1", 0);
+//        changeStudent();
+//        System.err.println(student.toString());
+//    }
 
-    private static void testMethod2() {
-        Student student = new Student("lcl", "1", 0);
-        changeStudent(student);
-        System.err.println(student.toString());
-    }
-
-    private static void changeStudent(Student student) {
-         student = new Student("lsy", "34", 0);
+    private static String changeStudent(String str) {
+        String s = "您的视频简历" + str + "已经发送给boss 播放视频附件";
+        return s.substring(16 + str.length());
     }
 
     public static void main(String[] args) {
-        System.err.println(new Date().getTime());
+        String s = changeStudent("刘常林");
+        System.err.println(s);
+        System.err.println(s.length());
+
 //        System.err.println(compareDate());
 
     }

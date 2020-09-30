@@ -87,7 +87,7 @@ public class INodeTreeimpl implements INodeTree {
             } else {
                 parent.rightChild = null;
             }
-            return true;
+
         }
         //[3]删除操作第二种情况，需要删除的节点有一个子节点
         if (current.leftChild == null && current.rightChild != null) {
