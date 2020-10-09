@@ -58,6 +58,56 @@ public class CheckUtil {
         return Pattern.compile(regex).matcher(str).matches();
     }
 
+    public static void main(String[] args) {
+//        System.out.println(getTextMessageResumeName("814简历.pdf"));
+        System.out.println(omitResumeName("814简历"));
+        System.out.println(omitResumeName("814作品集.pdf"));
+        System.out.println(omitResumeName("814作品集芜湖芜湖.pdf"));
+
+    }
+
+//    public static String omitResumeName(String resumeName) {
+//
+//    }
+
+
+    private static String omitResumeName(String resumeName) {
+        if (StringUtils.isBlank(resumeName)) {
+            return "";
+        }
+        resumeName = StringUtils.substringBeforeLast(resumeName, ".");
+        if (getLengthWithChineseDouble(resumeName) > 12) {
+            resumeName = subStringWithChineseDoubleV2(resumeName, 5);
+            return " " + resumeName + "... ";
+        }
+        return " " + resumeName + " ";
+    }
+
+    private static String subStringWithChineseDoubleV2(String context, int length) {
+        String var1 = StringUtils.substring(context, 0, length * 2);
+        char[] chars = var1.toCharArray();
+        int len = 0;
+        int index = 0;
+
+        for (char c : chars) {
+            if (getChineseLength(CharUtils.toString(c)) > 0) {
+                len += 2;
+            } else {
+                len++;
+            }
+            int dif = length * 2 - len;
+            if (dif < 2) {
+                if (index+1 < chars.length && getChineseLength(CharUtils.toString(c)) < 0) {
+                    index += 1;
+                }
+                break;
+            }
+            index++;
+        }
+        return StringUtils.substring(context, 0, index + 1);
+    }
+
+
     public static String getTextMessageResumeName(String resumeName) {
         resumeName = StringUtils.substringBeforeLast(resumeName, ".");
         if (StringUtils.isNotEmpty(resumeName)) {
@@ -87,7 +137,6 @@ public class CheckUtil {
                 } else {
                     ++len;
                 }
-                // TODO: 2020/10/2 confirm string omit rule with pm
                 index = i;
                 int dif = length * 2 - len;
                 if (dif < 2) {
