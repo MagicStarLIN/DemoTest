@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
  * @author liuchanglin
  * @version 1.0
  * @ClassName: CheckUtil
- * @Description: TODO(这里用一句话描述这个类的作用)
  * @date 2019/10/31 9:29 上午
  */
 public class CheckUtil {
@@ -28,9 +27,9 @@ public class CheckUtil {
         return cardId.charAt(cardId.length() - 1) == bit;
     }
     private static char getBankCardCheckCode(String nonCheckCodeCardId) {
+        assert StringUtils.isNotBlank(nonCheckCodeCardId);
         int cardLenth = nonCheckCodeCardId.trim().length();
-        if (nonCheckCodeCardId == null || cardLenth == 0
-                || !nonCheckCodeCardId.matches("\\d+")) {
+        if (cardLenth == 0 || !nonCheckCodeCardId.matches("\\d+")) {
             throw new IllegalArgumentException("不是银行卡的卡号!");
         }
         char[] chs = nonCheckCodeCardId.trim().toCharArray();
