@@ -1,6 +1,5 @@
 package com.lcl.leetcode;
 
-import java.util.List;
 import java.util.Stack;
 
 /**

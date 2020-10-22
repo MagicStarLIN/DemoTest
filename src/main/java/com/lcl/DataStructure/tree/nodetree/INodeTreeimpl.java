@@ -1,5 +1,7 @@
 package com.lcl.DataStructure.tree.nodetree;
 
+import java.util.Stack;
+
 /**
  * @author liuchanglin
  * @version 1.0
@@ -161,4 +163,70 @@ public class INodeTreeimpl implements INodeTree {
         postOrder(root.rightChild);
         root.display();
     }
+
+    @Override
+    public void preOrderNoRecursive(Node root) {
+        if (root == null) {
+            return;
+        }
+        Stack<Node> stack = new Stack<>();
+        Node index = root;
+        while (!stack.empty() ||  index != null) {
+            if (index != null) {
+                index.display();
+                stack.push(index);
+                index = index.leftChild;
+            } else {
+                index = stack.peek();
+                stack.pop();
+                index = index.rightChild;
+            }
+        }
+    }
+
+    @Override
+    public void inOrderNoRecursive(Node root) {
+        if (root == null) {
+            return;
+        }
+        Stack<Node> stack = new Stack<>();
+        Node index = root;
+        while (!stack.empty() ||  index != null) {
+            if (index != null) {
+                stack.push(index);
+                index = index.leftChild;
+            } else {
+                index = stack.peek();
+                stack.pop();
+                index.display();
+                index = index.rightChild;
+            }
+        }
+    }
+
+    @Override
+    public void postOrderNoRecursive(Node root) {
+        if (root == null) {
+            return;
+        }
+        Stack<Node> stack = new Stack<>();
+        Node index = root;
+        stack.push(index);
+        Node pre = stack.peek();
+        while (!stack.isEmpty()) {
+            index = stack.peek();
+            if (index.rightChild == null || pre == index.rightChild) {
+                index.display();
+                stack.pop();
+                pre = index;
+            } else {
+                if (index.rightChild != null) {
+                    stack.push(index.rightChild);
+                }
+                if (index.leftChild != null) {
+                    stack.push(index.leftChild);
+                }
+            }
+        }
+        }
 }

@@ -19,4 +19,15 @@ public interface INodeTree {
     //后序遍历
     void postOrder(Node root);
 
+    //前序遍历非递归
+    void preOrderNoRecursive(Node root);
+
+    //中序遍历非递归
+    void inOrderNoRecursive(Node root);
+
+    //后序遍历非递归
+    void postOrderNoRecursive(Node root);
+
+
+
 }
