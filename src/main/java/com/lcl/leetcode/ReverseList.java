@@ -1,5 +1,7 @@
 package com.lcl.leetcode;
 
+import java.util.Stack;
+
 /**
  * @author liuchanglin
  * @version 1.0
@@ -8,15 +10,7 @@ package com.lcl.leetcode;
  * @date 2019-08-21 09:57
  */
 public class ReverseList {
-//    class ListNode {
-//        int val;
-//        ListNode next;
-//
-//        ListNode(int x) {
-//            val = x;
-//        }
-//    }
-    /*
+    /**
      * @Title reverseListwithcycle
      * @Description
      * 执行用时 :0 ms, 在所有 Java 提交中击败了100.00%的用户
@@ -41,7 +35,25 @@ public class ReverseList {
         head.next = null;
         return headNode;
     }
-    /*
+
+    public int[] reversePrint(ListNode head) {
+        if (head == null) return new int[]{};
+        Stack<ListNode> stack = new Stack();
+
+        while (head.next != null) {
+            stack.push(head);
+            head = head.next;
+        }
+        int[] array = new int[]{stack.size()};
+
+        for (int i = 0 ; i < stack.size() ; i++) {
+            array[i] = stack.peek().val;
+            stack.pop();
+        }
+        return array;
+
+    }
+    /**
      * @Title reverseListwithRecursion
      * @Description
      * 执行用时 : 1 ms, 在所有 Java 提交中击败了86.19%的用户
