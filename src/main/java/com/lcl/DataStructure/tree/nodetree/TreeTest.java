@@ -32,10 +32,14 @@ public class TreeTest {
 //        System.out.println("中序遍历");
 //        services.inOrder(root);
 //        System.out.println("后序遍历");
-//        services.postOrder(root);
+        services.postOrder(root);
 
-        services.DeleteNode(9,root);
-        services.preOrder(root);
+        System.out.println("+++++++++++++++++++++++");
+
+        services.postOrderNoRecursive(root);
+
+//        services.DeleteNode(9,root);
+//        services.preOrder(root);
 
 
     }

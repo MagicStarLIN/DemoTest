@@ -215,7 +215,8 @@ public class INodeTreeimpl implements INodeTree {
         Node pre = stack.peek();
         while (!stack.isEmpty()) {
             index = stack.peek();
-            if (index.rightChild == null || pre == index.rightChild) {
+            if ((index.rightChild == null || pre == index.rightChild)
+                    || (pre != null && (pre == index.rightChild || pre == index.leftChild))) {
                 index.display();
                 stack.pop();
                 pre = index;
@@ -228,5 +229,5 @@ public class INodeTreeimpl implements INodeTree {
                 }
             }
         }
-        }
+    }
 }
