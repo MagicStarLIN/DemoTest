@@ -2,7 +2,6 @@ package com.lcl.utils;
 
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 import java.util.Random;
 
 /**

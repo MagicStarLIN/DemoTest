@@ -1,8 +1,10 @@
 package com.lcl.test;
 
 import com.lcl.utils.CommonUtil;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -23,9 +25,20 @@ public class Test2 {
         }
         return "BASE_PATH" + File.separator + type + File.separator + CommonUtil.SDF_YMD.format(date) + time1 + time2 + File.separator;
     }
-
+    // TODO: 2020/11/25  date  hh-mm-ss.SSS 00:00:00.000
+    private static Date getBeforeTodayWithStep(int timeStep) {
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.DAY_OF_MONTH, -timeStep);
+        return calendar.getTime();
+    }
     public static void main(String[] args) {
-        String result = getDateDirPath(new Date(System.currentTimeMillis() + 5 * 60 * 1000), "exchange");
-        System.err.println(result);
+        System.out.println(DateFormatUtils.format(getBeforeTodayWithStep(530), "yyyy-MM-dd HH:mm:ss.SSS"));
+
     }
 }
