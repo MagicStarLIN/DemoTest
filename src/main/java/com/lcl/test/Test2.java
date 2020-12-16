@@ -1,11 +1,12 @@
 package com.lcl.test;
 
+import com.google.common.base.Joiner;
 import com.lcl.utils.CommonUtil;
+import com.lcl.utils.HttpClientUtil;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.File;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 /**
  * @author liuchanglin
@@ -37,8 +38,21 @@ public class Test2 {
         calendar.add(Calendar.DAY_OF_MONTH, -timeStep);
         return calendar.getTime();
     }
-    public static void main(String[] args) {
-        System.out.println(DateFormatUtils.format(getBeforeTodayWithStep(530), "yyyy-MM-dd HH:mm:ss.SSS"));
 
+
+
+    public static String httpsSendBossHiMsg(String url, List<String> toUsersEmails, String title, String content) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("users", Joiner.on(",").join(toUsersEmails));
+        params.put("content", content);
+        params.put("tname", title);
+        params.put("sbiz", "ops");
+        return HttpClientUtil.postRequest(url, params);
+    }
+
+    public static void main(String[] args) {
+//        System.out.println(httpsSendBossHiMsg("https://ops.weizhipin.com/api/v1/send_bosshi/",
+//                Lists.newArrayList("liuchanglin@kanzhun.com"), "测试！", "123"));
+        System.out.println(DateFormatUtils.format(getBeforeTodayWithStep(30),"yyyy-MM-dd HH:mm:ss"));
     }
 }
