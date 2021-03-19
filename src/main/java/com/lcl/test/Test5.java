@@ -1,5 +1,10 @@
 package com.lcl.test;
 
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import java.util.concurrent.Executors;
+
 /**
  * @author liuchanglin
  * @version 1.0
@@ -7,15 +12,10 @@ package com.lcl.test;
  * @date 2019-08-06 17:59
  */
 public class Test5 {
-    public static void test(String[] args) {
-        Student s1 = new Student();
-        Student s2 = new Student();
-        Test5.swap(s1, s2);
-        System.out.println("s1:" + s1.getName());
-//        System.out.println("s1:" + s1);
-        System.out.println("s2:" + s2.getName());
-//        System.out.println("s2:" + s2);
-    }
+
+
+    ListeningExecutorService pool = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
+
 
     public static void swap(Student x, Student y) {
         Student temp = x;

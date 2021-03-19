@@ -13,6 +13,9 @@ import java.util.regex.Pattern;
  * @date 2019/10/31 9:29 上午
  */
 public class CheckUtil {
+
+    private static final Pattern hintPattern = Pattern.compile("\\*#(\\d+)#$");
+
     /**
      * @Title checkBankCard
      * @Description luhm算法检验银行卡号
@@ -55,14 +58,6 @@ public class CheckUtil {
      **/
     public static boolean regexMatch(String regex, String str) {
         return Pattern.compile(regex).matcher(str).matches();
-    }
-
-    public static void main(String[] args) {
-//        System.out.println(getTextMessageResumeName("814简历.pdf"));
-        System.out.println(omitResumeName("814简历"));
-        System.out.println(omitResumeName("814作品集.pdf"));
-        System.out.println(omitResumeName("814作品集芜湖芜湖.pdf"));
-
     }
 
 //    public static String omitResumeName(String resumeName) {
@@ -191,5 +186,19 @@ public class CheckUtil {
             len--;
         }
         return ((st > 0) || (len < value.length)) ? str.substring(st, len) : str;
+    }
+
+
+    public static void main(String[] args) {
+
+        Matcher matcher = hintPattern.matcher("任意内容*#16#");
+        int pos = 16 % 30;
+        if (matcher.find()) {
+            System.out.println(Integer.valueOf(matcher.group(1)));
+            System.out.println(pos);
+        } else {
+            System.out.println("not found");
+        }
+
     }
 }

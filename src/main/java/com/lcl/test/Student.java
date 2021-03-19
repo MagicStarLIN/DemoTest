@@ -25,6 +25,10 @@ public class Student {
 
     }
 
+    public Student(String name) {
+        this.name = name;
+    }
+
     public Student(String name, String id, int sex) {
         this.name = name;
         this.id = id;

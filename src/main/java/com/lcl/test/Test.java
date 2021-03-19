@@ -1,5 +1,11 @@
 package com.lcl.test;
 
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -11,6 +17,8 @@ import java.util.Date;
  */
 public class Test {
     volatile String lcl = "lcl";
+
+    private static String path = "/Users/admin/tempFile";
     private static void testMethod() {
          int i = 1;
         int[] arr = {1, 2, 3, 4};
@@ -34,12 +42,29 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        String s = changeStudent("刘常林");
-        System.err.println(s);
-        System.err.println(s.length());
+        File newFile = new File(path +"/12312"+ "/lcl.txt");
 
-//        System.err.println(compareDate());
+        try {
+            FileUtils.copyInputStreamToFile(new FileInputStream(path + "/txtEdit.txt"), newFile);
 
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private static File copyFile(InputStream inputStream, File destFile) throws IOException {
+        if (null == inputStream) {
+            return null;
+        }
+        if (!destFile.exists()) {
+            if (!destFile.getParentFile().exists()) {
+                destFile.getParentFile().mkdir();
+            }
+            destFile.createNewFile();
+        }
+        FileUtils.copyInputStreamToFile(inputStream, destFile);
+        return destFile;
     }
 
     private static int compareDate(Date d1, Date d2) {

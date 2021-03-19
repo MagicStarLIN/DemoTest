@@ -1,5 +1,9 @@
 package com.lcl.test;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import java.util.Date;
+
 /**
  * @author liuchanglin
  * @version 1.0
@@ -7,12 +11,24 @@ package com.lcl.test;
  * @date 2019/9/8 8:43 下午
  */
 public class Test7 {
-    private int getLength(int h,int n) {
-        int s = h;
-        for (int i = 0; i < n; i++) {
-            h = h/2;
-            s += h*2;
-        }
-        return s;
+
+
+    private static String params = "203 333 1023 3323";
+
+    public static void main(String[] args) {
+
+//        long friendId = 123412341L;
+//        int friendSource = 1;
+//        long expectId = 123412341L;
+//        long jobId = 123412341L;
+//
+//        String s = String.format("bosszp://bosszhipin.app/openwith?" +
+//                        "type=bossInviteVideoInterview&friendId=%s&friendSource=%s&expectId=%s&jobId=%s",
+//                friendId, friendSource, expectId, jobId);
+
+        System.out.println(DateFormatUtils.format(new Date(), "yyyyMMdd'T'HHmmss"));
+
     }
+
+
 }

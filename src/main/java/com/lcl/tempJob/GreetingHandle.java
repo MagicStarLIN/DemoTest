@@ -1,41 +1,36 @@
 package com.lcl.tempJob;
 
-import com.google.common.collect.Lists;
 import com.lcl.utils.FileUtils;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GreetingHandle {
 
 
     private static void doHandle() {
-        List<String> greetings = FileUtils.readFromFile(FileUtils.FilePathPreFix + "greetings.txt", StandardCharsets.UTF_8.displayName());
-        List<String> sqls = Lists.newArrayList();
-        String sql = "INSERT INTO `greeting_template`(`identity`, `template`, `demo`, `add_time`, `update_time`, `type`, `category`) VALUES (%s, '%s', '%s', now(), now(), 0, %s);";
-        for (String greeting : greetings) {
-            String[] sqlParams = greeting.split("\\*");
-            String template = handleTemplate(sqlParams[0]);
-            String readySql = String.format(sql, sqlParams[1], template, template.replace("${position}", "产品经理(示例职位)"), sqlParams[2]);
-            sqls.add(readySql);
-        }
+        try {
+            List<String> bgInfos = FileUtils.readFromFile(FileUtils.FilePathPreFix + "bgInfos.txt", StandardCharsets.UTF_8.displayName());
 
-        for (String s : sqls) {
-            System.out.println(s);
-        }
 
+            Set<String> resultInfos = new HashSet<>(bgInfos);
+            File newFile = new File(FileUtils.FilePathPreFix + "finalBgInfos.txt");
+            for (String resultInfo : resultInfos) {
+                resultInfo += "\n";
+                org.apache.commons.io.FileUtils.writeStringToFile(newFile, resultInfo, true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
-    private static String handleTemplate(String template) {
-        String stand = "${position}";
-        if (template.contains("{职位名称}")) {
-            template = template.replace("{职位名称}", stand);
-        } else if (template.contains("{岗位名称}")) {
-            template = template.replace("{岗位名称}", stand);
-        }
-        return template;
-    }
+//    private static String handleTemplate(String template) {
+//        d
+//    }
 
 
     public static void main(String[] args) {
