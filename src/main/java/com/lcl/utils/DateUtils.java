@@ -216,4 +216,34 @@ public class DateUtils {
         return date;
     }
 
+    /**
+     *
+     * @param date
+     * @param pattern
+     * @return
+     */
+    private static int getIntDate(Date date, String pattern) {
+        if (date == null) {
+            return 0;
+        } else {
+            DateFormat df = new SimpleDateFormat(pattern);
+            return Integer.parseInt(df.format(date));
+        }
+    }
+
+    public static int getDate8() {
+        return getIntDate(new Date(), "yyyyMMdd");
+    }
+
+    public static String getDate13() {
+        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        return df.format(new Date());
+    }
+
+
+    public static String getDate10() {
+        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+        return df.format(new Date());
+    }
+
 }

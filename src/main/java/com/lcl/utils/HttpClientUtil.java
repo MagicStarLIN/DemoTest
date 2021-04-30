@@ -1,5 +1,6 @@
 package com.lcl.utils;
 
+import com.alibaba.excel.util.CollectionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -7,6 +8,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -25,9 +27,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @ClassName: HttpClientUtil
@@ -96,9 +96,12 @@ public class HttpClientUtil {
 	 * @date 2019年6月25日 下午2:54:13
 	 * @param url
 	 * @param params
-	 * @return
 	 */
 	public static String postRequest(String url, Map<String, Object> params) {
+		return postRequest(url, params, Collections.emptyMap());
+	}
+
+	public static String postRequest(String url, Map<String, Object> params, Map<String, Object> headers) {
 		// 创建Httpclient对象
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -111,7 +114,15 @@ public class HttpClientUtil {
 					.setConnectTimeout(300*1000).setConnectionRequestTimeout(60*1000)
 					.setSocketTimeout(300*1000).build();
 			httpPost.setConfig(requestConfig);
-			httpPost.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
+			if (CollectionUtils.isEmpty(headers)) {
+				httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+			} else {
+				Iterator iterator = headers.entrySet().iterator();
+				while(iterator.hasNext()) {
+					Map.Entry entry = (Map.Entry)iterator.next();
+					httpPost.addHeader((String)entry.getKey(), (String)entry.getValue());
+				}
+			}
 
 			// 创建参数列表
 			if (params != null) {
@@ -139,15 +150,14 @@ public class HttpClientUtil {
 	}
 
 	/**
-	 * @Title: postRequestJson
-	 * @Description: postJson请求
-	 * @return String 返回类型
-	 * @date 2018年12月28日 下午2:55:15
 	 * @param url
 	 * @param json
 	 * @return
+	 * @Title: postRequestJson
+	 * @Description: postJson请求
+	 * @date 2018年12月28日 下午2:55:15
 	 */
-	public static String postRequestJson(String url, String json) {
+	public static String postRequestJson(String url, String json, Map<String, Object> headers) {
 		// 创建Httpclient对象
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
@@ -156,14 +166,64 @@ public class HttpClientUtil {
 			// 创建Http Post请求
 			HttpPost httpPost = new HttpPost(url);
 			RequestConfig requestConfig = RequestConfig.custom()
-					.setConnectTimeout(300*1000).setConnectionRequestTimeout(60*1000)
-					.setSocketTimeout(300*1000).build();
+					.setConnectTimeout(300 * 1000).setConnectionRequestTimeout(60 * 1000)
+					.setSocketTimeout(300 * 1000).build();
 			httpPost.setConfig(requestConfig);
+			if (CollectionUtils.isEmpty(headers)) {
+				httpPost.setHeader("User-Agent",
+						"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
+			} else {
+				Iterator iterator = headers.entrySet().iterator();
+				while (iterator.hasNext()) {
+					Map.Entry entry = (Map.Entry) iterator.next();
+					httpPost.addHeader((String) entry.getKey(), (String) entry.getValue());
+				}
+			}
 			// 创建请求内容
 			StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
 			httpPost.setEntity(entity);
 			// 执行http请求
 			response = httpClient.execute(httpPost);
+			resultString = EntityUtils.toString(response.getEntity(), "utf-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				response.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return resultString;
+	}
+
+	public static String deleteRequestJson(String url, String json, Map<String, Object> headers) {
+		// 创建Httpclient对象
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String resultString = "";
+		try {
+			// 创建Http Post请求
+			HttpDelete httpDelete = new HttpDelete(url);
+			RequestConfig requestConfig = RequestConfig.custom()
+					.setConnectTimeout(300 * 1000).setConnectionRequestTimeout(60 * 1000)
+					.setSocketTimeout(300 * 1000).build();
+			httpDelete.setConfig(requestConfig);
+			if (CollectionUtils.isEmpty(headers)) {
+				httpDelete.setHeader("User-Agent",
+						"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
+			} else {
+				Iterator iterator = headers.entrySet().iterator();
+				while (iterator.hasNext()) {
+					Map.Entry entry = (Map.Entry) iterator.next();
+					httpDelete.addHeader((String) entry.getKey(), (String) entry.getValue());
+				}
+			}
+//			// 创建请求内容
+//			StringEntity entity = new StringEntity(json, ContentType.APPLICATION_JSON);
+//			httpDelete.setEntity(entity);
+			// 执行http请求
+			response = httpClient.execute(httpDelete);
 			resultString = EntityUtils.toString(response.getEntity(), "utf-8");
 		} catch (Exception e) {
 			e.printStackTrace();
