@@ -2,7 +2,7 @@ package com.lcl.leetcode;
 
 /**
  * @ClassName MyPow
- * @Description
+ * @Description leetCode 50. Pow(x, n)
  * @Date 2021/4/30 1:43 下午
  * @Author liuchanglin
  * @Version 1.0
