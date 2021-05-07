@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
@@ -35,7 +36,7 @@ public class GreetingHandle {
         }
     }
 
-    private static Map<Long, String> getResumeMailBossId(String path) {
+    private static Map<Long, String> getResumeMailBossId(String path) throws IOException {
         if (StringUtils.isBlank(path)) {
             return Collections.EMPTY_MAP;
         }
@@ -74,7 +75,7 @@ public class GreetingHandle {
 //    }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         getResumeMailBossId("/Users/admin/tempFile/uniview_boss_idname.txt");
     }
 }
