@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @ClassName: textShop
  * @date 2021/1/3 8:09 下午
  */
-public class textShop {
+public class textShop { 
     static Scanner sc = new Scanner(System.in);
     public static LocalShop lclshop = new LocalShop();
     public static Cart currentCart = new Cart();
