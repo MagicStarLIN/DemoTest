@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 @Data
 @Builder
-public class Student {
+public class Student extends Human{
     private String name;
 
     private String id;
@@ -55,5 +55,9 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Student().getClassName());
     }
 }
