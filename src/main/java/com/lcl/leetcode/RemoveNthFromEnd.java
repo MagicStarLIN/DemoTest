@@ -15,7 +15,7 @@ public class RemoveNthFromEnd {
      * 通过测试用例：
      * 208 / 208
      */
-    public ListNode removeNthFromEnd(ListNode head, int n) {
+    public ListNode solution(ListNode head, int n) {
 
         ListNode quickPointer = head;
         ListNode slowPointer = head;
