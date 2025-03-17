@@ -76,6 +76,10 @@ public class GreetingHandle {
 
 
     public static void main(String[] args) throws IOException {
-        getResumeMailBossId("/Users/admin/tempFile/uniview_boss_idname.txt");
+        try {
+            getResumeMailBossId("/Users/admin/tempFile/uniview_boss_idname.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
