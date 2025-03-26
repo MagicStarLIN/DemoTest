@@ -186,11 +186,6 @@ public class HttpServletRequestImpl implements HttpServletRequest {
     }
 
     @Override
-    public boolean isRequestedSessionIdFromUrl() {
-        return false;
-    }
-
-    @Override
     public boolean authenticate(HttpServletResponse httpServletResponse) throws IOException, ServletException {
         return false;
     }
@@ -341,11 +336,6 @@ public class HttpServletRequestImpl implements HttpServletRequest {
     }
 
     @Override
-    public String getRealPath(String s) {
-        return "";
-    }
-
-    @Override
     public int getRemotePort() {
         return 0;
     }
@@ -397,6 +387,21 @@ public class HttpServletRequestImpl implements HttpServletRequest {
 
     @Override
     public DispatcherType getDispatcherType() {
+        return null;
+    }
+
+    @Override
+    public String getRequestId() {
+        return "";
+    }
+
+    @Override
+    public String getProtocolRequestId() {
+        return "";
+    }
+
+    @Override
+    public ServletConnection getServletConnection() {
         return null;
     }
 }

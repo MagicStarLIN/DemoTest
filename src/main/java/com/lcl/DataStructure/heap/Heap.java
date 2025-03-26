@@ -29,6 +29,7 @@ public class Heap {
             swap(a, i, i / 2);
         }
     }
+
     private void swap(int[] a, int i, int i1) {
         int temp = i1;
         a[i1] = a[i];
@@ -74,7 +75,7 @@ public class Heap {
         while (k > 1) {
             swap(a, k, 1);
             k--;
-            heapify(a,k,1);
+            heapify(a, k, 1);
         }
     }
 }

@@ -47,16 +47,6 @@ public class HttpServletResponseImpl implements HttpServletResponse {
     }
 
     @Override
-    public String encodeUrl(String s) {
-        return "";
-    }
-
-    @Override
-    public String encodeRedirectUrl(String s) {
-        return "";
-    }
-
-    @Override
     public void sendError(int i, String s) throws IOException {
 
     }
@@ -103,11 +93,6 @@ public class HttpServletResponseImpl implements HttpServletResponse {
 
     @Override
     public void setStatus(int i) {
-
-    }
-
-    @Override
-    public void setStatus(int i, String s) {
 
     }
 
