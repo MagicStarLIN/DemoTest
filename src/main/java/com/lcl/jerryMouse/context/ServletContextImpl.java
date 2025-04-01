@@ -3,6 +3,7 @@ package com.lcl.jerryMouse.context;
 import com.lcl.jerryMouse.servlet.ServletRegistrationImpl;
 import com.lcl.jerryMouse.utils.AnnoUtils;
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.descriptor.JspConfigDescriptor;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +25,14 @@ import java.util.*;
  */
 public class ServletContextImpl implements ServletContext {
 
-    private Map<String, ServletRegistrationImpl> servletRegistrations = new HashMap<>();
+    Map<String, ServletRegistrationImpl> servletRegistrations = new HashMap<>();
+    Map<String, FilterRegistrationImpl> filterRegistrations = new HashMap<>();
 
     final Map<String, Servlet> nameToServlets = new HashMap<>();
+    final Map<String, Filter> nameToFilters = new HashMap<>();
 
     final List<ServletMapping> servletMappings = new ArrayList<>();
+    final List<FilterMapping> filterMappings = new ArrayList<>();
 
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String path = request.getRequestURI();
@@ -47,7 +51,20 @@ public class ServletContextImpl implements ServletContext {
             pw.close();
             return;
         }
-        servlet.service(request, response);
+        // 查找Filter:
+        List<Filter> enabledFilters = new ArrayList<>();
+        for (FilterMapping mapping : this.filterMappings) {
+            if (mapping.matches(path)) {
+                enabledFilters.add(mapping.filter);
+            }
+        }
+        Filter[] filters = enabledFilters.toArray(Filter[]::new);
+        // 构造FilterChain实例:
+        FilterChain chain = new FilterChainImpl(filters, servlet);
+        // 由FilterChain处理:
+        chain.doFilter(request, response);
+
+//        servlet.service(request, response);
     }
 
     public void initialize(List<Class<?>> servletClasses) {
@@ -287,20 +304,56 @@ public class ServletContextImpl implements ServletContext {
 
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName, String className) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            return addFilter(filterName, (Class<? extends Filter>) Class.forName(className));
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName, Filter filter) {
-        // TODO Auto-generated method stub
-        return null;
+        FilterRegistrationImpl registration = new FilterRegistrationImpl(this, filterName, filter);
+        this.filterRegistrations.put(filterName, registration);
+        return registration;
     }
 
     @Override
     public FilterRegistration.Dynamic addFilter(String filterName, Class<? extends Filter> filterClass) {
-        // TODO Auto-generated method stub
-        return null;
+        try {
+            return addFilter(filterName, filterClass.newInstance());
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void initFilters(List<Class<?>> filterClasses) {
+        for (Class<?> c : filterClasses) {
+            WebFilter wf = c.getAnnotation(WebFilter.class);
+            if (wf != null) {
+                @SuppressWarnings("unchecked")
+                Class<? extends Filter> clazz = (Class<? extends Filter>) c;
+                FilterRegistration.Dynamic registration = this.addFilter(AnnoUtils.getFilterName(clazz), clazz);
+                registration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, AnnoUtils.getFilterUrlPatterns(clazz));
+                registration.setInitParameters(AnnoUtils.getFilterInitParams(clazz));
+            }
+        }
+
+        // init filters:
+        for (String name : this.filterRegistrations.keySet()) {
+            var registration = this.filterRegistrations.get(name);
+            try {
+                registration.filter.init(registration.getFilterConfig());
+                this.nameToFilters.put(name, registration.filter);
+                for (String urlPattern : registration.getUrlPatternMappings()) {
+                    this.filterMappings.add(new FilterMapping(urlPattern, registration.filter));
+                }
+                registration.initialized = true;
+            } catch (ServletException e) {
+            }
+        }
     }
 
     @Override
