@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.URI;
 
 /**
@@ -29,6 +30,26 @@ public class HttpExchangeAdapter implements HttpExchangeRequest, HttpExchangeRes
     @Override
     public URI getRequestURI() {
         return httpExchange.getRequestURI();
+    }
+
+    @Override
+    public Headers getRequestHeaders() {
+        return null;
+    }
+
+    @Override
+    public InetSocketAddress getRemoteAddress() {
+        return null;
+    }
+
+    @Override
+    public InetSocketAddress getLocalAddress() {
+        return null;
+    }
+
+    @Override
+    public byte[] getRequestBody() throws IOException {
+        return new byte[0];
     }
 
     @Override

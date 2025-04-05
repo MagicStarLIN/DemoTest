@@ -1,10 +1,13 @@
 package com.lcl.jerryMouse.servlet;
 
 import com.google.common.collect.Maps;
+import com.lcl.jerryMouse.context.HttpHeaders;
+import com.lcl.jerryMouse.context.Parameters;
+import com.lcl.jerryMouse.context.ServletContextImpl;
+import com.lcl.jerryMouse.utils.HttpUtils;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.internal.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,11 +26,24 @@ import java.util.regex.Pattern;
  */
 public class HttpServletRequestImpl implements HttpServletRequest {
 
+    final ServletContextImpl servletContext;
     final HttpExchangeRequest exchangeRequest;
+    final HttpServletResponse response;
+    final HttpHeaders headers;
+    final Parameters parameters;
 
-    public HttpServletRequestImpl(HttpExchangeRequest exchangeRequest) {
+//    public HttpServletRequestImpl(HttpExchangeRequest exchangeRequest) {
+//        this.exchangeRequest = exchangeRequest;
+//    }
+
+    public HttpServletRequestImpl(ServletContextImpl servletContext, HttpExchangeRequest exchangeRequest, HttpServletResponse response) {
+        this.servletContext = servletContext;
         this.exchangeRequest = exchangeRequest;
+        this.response = response;
+        this.headers = new HttpHeaders(exchangeRequest.getRequestHeaders());
+        this.parameters = new Parameters(exchangeRequest, "UTF-8");
     }
+
 
     @Override
     public String getParameter(String s) {
@@ -67,7 +83,8 @@ public class HttpServletRequestImpl implements HttpServletRequest {
 
     @Override
     public Cookie[] getCookies() {
-        return new Cookie[0];
+        String cookieValue = this.getHeader("Cookie");
+        return HttpUtils.parseCookies(cookieValue);
     }
 
     @Override
@@ -76,18 +93,22 @@ public class HttpServletRequestImpl implements HttpServletRequest {
     }
 
     @Override
-    public String getHeader(String s) {
-        return "";
+    public String getHeader(String name) {
+        return this.headers.getHeader(name);
     }
 
     @Override
-    public Enumeration<String> getHeaders(String s) {
-        return null;
+    public Enumeration<String> getHeaders(String name) {
+        List<String> hs = this.headers.getHeaders(name);
+        if (hs == null) {
+            return Collections.emptyEnumeration();
+        }
+        return Collections.enumeration(hs);
     }
 
     @Override
     public Enumeration<String> getHeaderNames() {
-        return null;
+        return Collections.enumeration(this.headers.getHeaderNames());
     }
 
     @Override
@@ -156,8 +177,39 @@ public class HttpServletRequestImpl implements HttpServletRequest {
     }
 
     @Override
-    public HttpSession getSession(boolean b) {
-        return null;
+    public HttpSession getSession(boolean create) {
+        String sessionId = null;
+        // 获取所有Cookie:
+        Cookie[] cookies = getCookies();
+        if (cookies != null) {
+            // 查找JSESSIONID:
+            for (Cookie cookie : cookies) {
+                if ("JSESSIONID".equals(cookie.getName())) {
+                    // 拿到Session ID:
+                    sessionId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        // 未获取到SessionID，且create=false，返回null:
+        if (sessionId == null && !create) {
+            return null;
+        }
+        // 未获取到SessionID，但create=true，创建新的Session:
+        if (sessionId == null) {
+            // 如果Header已经发送，则无法创建Session，因为无法添加Cookie:
+            if (this.response.isCommitted()) {
+                throw new IllegalStateException("Cannot create session for response is commited.");
+            }
+            // 创建随机字符串作为SessionID:
+            sessionId = UUID.randomUUID().toString();
+            // 构造一个名为JSESSIONID的Cookie:
+            String cookieValue = "JSESSIONID=" + sessionId + "; Path=/; SameSite=Strict; HttpOnly";
+            // 添加到HttpServletResponse的Header:
+            this.response.addHeader("Set-Cookie", cookieValue);
+        }
+        // 返回一个Session对象:
+        return this.servletContext.getSessionManager().getSession(sessionId);
     }
 
     @Override

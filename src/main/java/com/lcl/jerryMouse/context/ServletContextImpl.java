@@ -1,5 +1,6 @@
 package com.lcl.jerryMouse.context;
 
+import com.lcl.jerryMouse.seesion.SessionManager;
 import com.lcl.jerryMouse.servlet.ServletRegistrationImpl;
 import com.lcl.jerryMouse.utils.AnnoUtils;
 import jakarta.servlet.*;
@@ -33,6 +34,8 @@ public class ServletContextImpl implements ServletContext {
 
     final List<ServletMapping> servletMappings = new ArrayList<>();
     final List<FilterMapping> filterMappings = new ArrayList<>();
+
+    final SessionManager sessionManager = new SessionManager(this, 600);
 
     public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String path = request.getRequestURI();
@@ -96,6 +99,10 @@ public class ServletContextImpl implements ServletContext {
         }
         // important: sort mappings:
         Collections.sort(this.servletMappings);
+    }
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 
     @Override

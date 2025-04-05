@@ -33,8 +33,8 @@ public class HttpConnector implements HttpHandler, AutoCloseable {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         HttpExchangeAdapter httpExchangeAdapter = new HttpExchangeAdapter(httpExchange);
-        HttpServletRequestImpl request = new HttpServletRequestImpl(httpExchangeAdapter);
         HttpServletResponseImpl response = new HttpServletResponseImpl(httpExchangeAdapter);
+        HttpServletRequestImpl request = new HttpServletRequestImpl(this.servletContext, httpExchangeAdapter, response);
 
         process(request, response);
     }
