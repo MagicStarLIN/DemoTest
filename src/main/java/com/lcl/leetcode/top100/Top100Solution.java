@@ -362,4 +362,77 @@ public class Top100Solution {
         return new ArrayList<>(result);
     }
 
+
+    /**
+     * @Title trap
+     * @Description <a href="https://leetcode.cn/problems/trapping-rain-water/?envType=study-plan-v2&envId=top-100-liked">42. 接雨水</a>
+     * @Author liuchanglin
+     * @Date 2026/7/27 17:06
+     * @Param [height]
+     * @return int
+     **/
+    public int trap(int[] height) {
+        int vol = 0;
+        int left = 0;
+        while (left < height.length - 1) {
+            int right = left + 1;
+            int maxRight = right;
+
+            // 寻找后续最大的边
+            while (right < height.length) {
+                if (height[right] < height[left]) {
+                    if (height[right] > height[maxRight]) {
+                        maxRight = right;
+                    }
+                } else {
+                    // 说明有新的边界可以用了
+                    break;
+                }
+                right++;
+            }
+
+            if (right == height.length) {
+                right = maxRight;
+            }
+
+            // 计算这一波雨水
+            int maxHeight = Math.min(height[left], height[right]);
+            for (int i = left + 1; i < right ; i++) {
+                vol += maxHeight - height[i];
+            }
+
+            // 更新left
+            left = right;
+
+        }
+        return vol;
+    }
+
+
+    public int trapV2(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+
+        int vol = 0;
+
+        int leftMax = height[left];
+        int rightMax = height[right];
+
+        while (left < right) {
+            leftMax = Math.max(leftMax, height[left]);
+            rightMax = Math.max(rightMax, height[right]);
+
+            if (leftMax > rightMax) {
+                vol += rightMax - height[right];
+                right--;
+            } else {
+                vol += leftMax - height[left];
+                left++;
+            }
+
+
+
+        }
+        return vol;
+    }
 }
