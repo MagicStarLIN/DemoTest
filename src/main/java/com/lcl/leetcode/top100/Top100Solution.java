@@ -241,12 +241,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return int
      * @Title maxArea
      * @Description <a href="https://leetcode.cn/problems/container-with-most-water/description/?envType=study-plan-v2&envId=top-100-liked">盛最多水的容器</a>
      * @Author liuchanglin
      * @Date 2026/7/26 22:10
      * @Param [height]
-     * @return int
      **/
     public int maxArea(int[] height) {
 
@@ -288,12 +288,12 @@ public class Top100Solution {
 
 
     /**
+     * @return java.util.List<java.util.List<java.lang.Integer>>
      * @Title threeSum
      * @Description <a href="https://leetcode.cn/problems/3sum/description/?envType=study-plan-v2&envId=top-100-liked">15. 三数之和</a>
      * @Author liuchanglin
      * @Date 2026/7/26 23:43
      * @Param [nums]
-     * @return java.util.List<java.util.List<java.lang.Integer>>
      **/
     public List<List<Integer>> threeSum(int[] nums) {
 
@@ -364,12 +364,12 @@ public class Top100Solution {
 
 
     /**
+     * @return int
      * @Title trap
      * @Description <a href="https://leetcode.cn/problems/trapping-rain-water/?envType=study-plan-v2&envId=top-100-liked">42. 接雨水</a>
      * @Author liuchanglin
      * @Date 2026/7/27 17:06
      * @Param [height]
-     * @return int
      **/
     public int trap(int[] height) {
         int vol = 0;
@@ -397,7 +397,7 @@ public class Top100Solution {
 
             // 计算这一波雨水
             int maxHeight = Math.min(height[left], height[right]);
-            for (int i = left + 1; i < right ; i++) {
+            for (int i = left + 1; i < right; i++) {
                 vol += maxHeight - height[i];
             }
 
@@ -429,10 +429,70 @@ public class Top100Solution {
                 vol += leftMax - height[left];
                 left++;
             }
-
-
-
         }
         return vol;
     }
+
+    /**
+     * @return int
+     * @Title lengthOfLongestSubstring
+     * @Description <a href="https://leetcode.cn/problems/longest-substring-without-repeating-characters/description/?envType=study-plan-v2&envId=top-100-liked">3. 无重复字符的最长子串</a>
+     * @Author liuchanglin
+     * @Date 2026/7/28 22:18
+     * @Param [s]
+     **/
+    public int lengthOfLongestSubstring(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        // "abcabcbb"
+        char[] strs = s.toCharArray();
+        String resultS = String.valueOf(strs[0]);
+        int left = 0;
+        int right = 1;
+        int max = 1;
+        while (left <= right && right < strs.length) {
+            if (resultS.contains(String.valueOf(strs[right]))) {
+                left++;
+                resultS = resultS.substring(1);
+            } else {
+                resultS += strs[right];
+                right++;
+            }
+            max = Math.max(max, right - left);
+        }
+        return max;
+
+    }
+
+
+    public  static  int lengthOfLongestSubstringV2(String s) {
+        if (s == null || s.isEmpty()) {
+            return 0;
+        }
+        // "au"
+        char[] strs = s.toCharArray();
+        HashSet<Character> resultS = new HashSet<>(Collections.singleton(strs[0]));
+        int left = 0;
+        int right = 1;
+        int max = 1;
+        while (left <= right && right < strs.length) {
+            if (resultS.contains(strs[right])) {
+                resultS.remove(strs[left]);
+                left++;
+            } else {
+                resultS.add(strs[right]);
+                right++;
+            }
+            max = Math.max(max, resultS.size());
+        }
+        return max;
+
+    }
+
+    public static void main(String[] args) {
+        System.out.println(lengthOfLongestSubstringV2("au"));
+    }
+
+
 }
