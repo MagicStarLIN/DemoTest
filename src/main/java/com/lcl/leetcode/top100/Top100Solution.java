@@ -1,6 +1,10 @@
 package com.lcl.leetcode.top100;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author liuchanglin
@@ -466,7 +470,7 @@ public class Top100Solution {
     }
 
 
-    public  static  int lengthOfLongestSubstringV2(String s) {
+    public static int lengthOfLongestSubstringV2(String s) {
         if (s == null || s.isEmpty()) {
             return 0;
         }
@@ -490,9 +494,79 @@ public class Top100Solution {
 
     }
 
-    public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstringV2("au"));
+
+    /**
+     * @return java.util.List<java.lang.Integer>
+     * @Title findAnagrams
+     * @Description <a href="https://leetcode.cn/problems/find-all-anagrams-in-a-string/?envType=study-plan-v2&envId=top-100-liked">438. 找到字符串中所有字母异位词</a>
+     * @Author liuchanglin
+     * @Date 2026/7/29 23:46
+     * @Param [s, p]
+     **/
+    public List<Integer> findAnagrams(String s, String p) {
+        List<Integer> ans = new ArrayList<>();
+        int[] cntP = new int[26];
+        int[] window = new int[26];
+
+        for (char c : p.toCharArray()) {
+            cntP[c - 'a']++;
+        }
+
+        int left = 0;
+        int right = p.length() - 1;
+
+        while (right < s.length()) {
+            int index = left;
+            while (index <= right) {
+                window[s.charAt(index) - 'a']++;
+                index++;
+            }
+
+            if (Arrays.equals(cntP, window)) {
+                ans.add(left);
+            }
+            window = new int[26];
+            left++;
+            right++;
+
+        }
+        return ans;
     }
+
+
+    public static List<Integer> findAnagramsV2(String s, String p) {
+        List<Integer> ans = new ArrayList<>();
+        int[] cntP = new int[26];
+        int[] window = new int[26];
+
+        for (char c : p.toCharArray()) {
+            cntP[c - 'a']++;
+        }
+
+        int left = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            window[s.charAt(right) - 'a']++;
+
+            if ((right - left) + 1 > p.length()) {
+                window[s.charAt(left) - 'a']--;
+                left++;
+            }
+
+            if ((right - left) + 1 == p.length()) {
+                if (Arrays.equals(cntP, window)) {
+                    ans.add(left);
+                } else {
+                    window[s.charAt(left) - 'a']--;
+                    left++;
+                }
+            }
+
+        }
+
+        return ans;
+    }
+
 
 
 }
