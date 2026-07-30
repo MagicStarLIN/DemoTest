@@ -132,7 +132,10 @@ public class DateUtils {
     public static int[] getDate(String formatDate){
         Calendar calendar = getCalendar();
         String[] dateStr = formatDate.split("-");
-        calendar.set(Integer.valueOf(dateStr[0]),Integer.valueOf(dateStr[1]) - 1,Integer.valueOf(dateStr[2]));
+        calendar.set(
+                Integer.parseInt(dateStr[0]),
+                Integer.parseInt(dateStr[1]) - 1,
+                Integer.parseInt(dateStr[2]));
         int[] res = new int[2];
         res[1] = (int)(calendar.getTimeInMillis()/1000);
         calendar.add(Calendar.DAY_OF_YEAR, -1);

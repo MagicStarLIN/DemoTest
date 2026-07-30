@@ -1,5 +1,6 @@
-# Project exclude paths
+.DS_Store
+**/.DS_Store
 /target/
 /.worktrees/
-.idea
-.idea/*
+/.idea/
+*.iml
