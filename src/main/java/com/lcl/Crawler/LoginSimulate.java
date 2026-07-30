@@ -27,11 +27,11 @@ public class LoginSimulate {
      * @Param [url]
      * @return void
      **/
-    public static void setCookies(String url) {
+    public static void setCookies(String url, String cookie) {
         try {
             Document document = Jsoup.connect(url)
                     // 手动设置cookies
-                    .header("Cookie","bid=Dk2WuQKkLlo; ll=\"108288\"; __yadk_uid=kF3DpKHvfvGXp7If6ngFAZuIoxnyOiLz; douban-profile-remind=1; __utmv=30149280.15310; douban-fav-remind=1; __utmz=30149280.1570783328.4.4.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; push_doumail_num=0; ps=y; __utmc=30149280; ck=_SuZ; push_noty_num=1; _pk_ref.100001.8cb4=%5B%22%22%2C%22%22%2C1570863425%2C%22https%3A%2F%2Fwww.baidu.com%2Flink%3Furl%3D6H1XHgeLTlErvKLX8Ey-l1rDe7_qZ9VjXWtHkhjJd6RXBdVMAswZxRtxyf9gMA-t%26wd%3D%26eqid%3Db8391f7c000b3cd9000000035da0405c%22%5D; _pk_ses.100001.8cb4=*; __utma=30149280.2006208173.1557913858.1570851464.1570863426.6; __utmt=1; _pk_id.100001.8cb4=66eeb942d76785de.1557913881.5.1570863430.1570851586.; __utmb=30149280.2.10.1570863426; dbcl2=\"153101069:QpzJHgvPFhE\"")
+                    .header("Cookie", cookie)
                     .get();
             if (document != null) {
                 // 获取豆瓣昵称节点
@@ -64,15 +64,11 @@ public class LoginSimulate {
      * @Param [loginUrl, userInfoUrl]
      * @return void
      **/
-    public static void jsoupLogin(String loginUrl,String userInfoUrl)  throws IOException {
+    public static void jsoupLogin(String loginUrl, String userInfoUrl, String username, String password)
+            throws IOException {
 
         // 构造登陆参数
-        Map<String,String> data = new HashMap<>();
-        data.put("name","751969316@qq.com");
-        data.put("password","liuchanglin0529");
-        data.put("remember","false");
-        data.put("ticket","");
-        data.put("ck","");
+        Map<String, String> data = buildLoginData(username, password);
         Connection.Response login = Jsoup.connect(loginUrl)
                 .ignoreContentType(true) // 忽略类型验证
                 .followRedirects(false) // 禁止重定向
@@ -104,15 +100,37 @@ public class LoginSimulate {
             System.out.println("出错啦！！！！！");
         }
     }
+
+    public static Map<String, String> buildLoginData(String username, String password) {
+        if (username == null || username.isBlank() || password == null || password.isBlank()) {
+            throw new IllegalArgumentException("Username and password must not be blank");
+        }
+
+        Map<String, String> data = new HashMap<>();
+        data.put("name", username);
+        data.put("password", password);
+        data.put("remember", "false");
+        data.put("ticket", "");
+        data.put("ck", "");
+        return data;
+    }
+
     public static void main(String[] args) throws IOException {
-//        setCookies("https://www.douban.com/");
         // 个人中心url
         String user_info_url = "https://www.douban.com/";
 
         // 登陆接口
         String login_url = "https://accounts.douban.com/j/mobile/login/basic";
+        String username = System.getenv("DOUBAN_LOGIN_NAME");
+        String password = System.getenv("DOUBAN_LOGIN_PASSWORD");
+        String cookie = System.getenv("DOUBAN_COOKIE");
 
-        jsoupLogin(login_url,user_info_url);
+        if (cookie != null && !cookie.isBlank()) {
+            setCookies(user_info_url, cookie);
+            return;
+        }
+
+        jsoupLogin(login_url, user_info_url, username, password);
 
     }
 }
