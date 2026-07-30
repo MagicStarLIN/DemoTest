@@ -74,3 +74,9 @@ SpotBugs 可能报告刻意保留的教学示例问题；请逐条判断，不�
 - Apache HttpClient 4 的 `4.5.14` 仅供冻结的 `jerryMouse` 使用其 `DateUtils`；所有非 `jerryMouse` HTTP 代码均使用 HttpClient 5。
 
 `com.lcl.leetcode.Generate` 的公开契约仍然是返回完整的杨辉三角，而不是只返回最后一行。
+
+Disruptor 4 已移除 3.x 的 `WorkerPool`/`WorkHandler` 工作共享 API。普通的多个
+`EventHandler` 会各自收到每个事件，并不是两个工作线程之间的任务分配。因此
+`TestDisruptorDemo` 使用单个事件处理器，以明确保持每个发布事件只处理一次；如需
+并行工作共享，应选用具备明确队列所有权和关闭协议的独立示例，而不是把广播处理器
+误当成工作池。

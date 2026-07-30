@@ -2,8 +2,9 @@ package com.lcl.guava;
 
 import com.google.common.util.concurrent.RateLimiter;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,7 +16,8 @@ import java.util.concurrent.TimeUnit;
 public class LimiterTest {
 
 
-    private static final SimpleDateFormat FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private static final int THREAD_COUNT = 25;
 
@@ -37,15 +39,15 @@ public class LimiterTest {
     public static void testRateLimiterPermits() {
         RateLimiter rateLimiter = RateLimiter.create(1);
 
-        System.out.println("获取1个令牌开始，时间为" + FORMATTER.format(new Date()));
+        System.out.println("获取1个令牌开始，时间为" + formatTimestamp(Instant.now()));
         double cost = rateLimiter.acquire(1);
-        System.out.println("获取1个令牌结束，时间为" + FORMATTER.format(new Date()) + ", 耗时" + cost + "ms");
-        System.out.println("获取5个令牌开始，时间为" + FORMATTER.format(new Date()));
+        System.out.println("获取1个令牌结束，时间为" + formatTimestamp(Instant.now()) + ", 耗时" + cost + "ms");
+        System.out.println("获取5个令牌开始，时间为" + formatTimestamp(Instant.now()));
         cost = rateLimiter.acquire(5);
-        System.out.println("获取5个令牌结束，时间为" + FORMATTER.format(new Date()) + ", 耗时" + cost + "ms");
-        System.out.println("获取3个令牌开始，时间为" + FORMATTER.format(new Date()));
+        System.out.println("获取5个令牌结束，时间为" + formatTimestamp(Instant.now()) + ", 耗时" + cost + "ms");
+        System.out.println("获取3个令牌开始，时间为" + formatTimestamp(Instant.now()));
         cost = rateLimiter.acquire(3);
-        System.out.println("获取3个令牌结束，时间为" + FORMATTER.format(new Date()) + ", 耗时" + cost + "ms");
+        System.out.println("获取3个令牌结束，时间为" + formatTimestamp(Instant.now()) + ", 耗时" + cost + "ms");
     }
 
 
@@ -81,9 +83,13 @@ public class LimiterTest {
         public void run() {
             rateLimiter.acquire(1);
             System.out.println(Thread.currentThread().getName() +
-                    "获取到了令牌，时间 = " + FORMATTER.format(new Date()));
+                    "获取到了令牌，时间 = " + formatTimestamp(Instant.now()));
         }
 
+    }
+
+    static String formatTimestamp(Instant instant) {
+        return FORMATTER.format(instant.atZone(ZoneId.systemDefault()));
     }
 
     public static void main(String[] args) throws InterruptedException {

@@ -1,5 +1,6 @@
 package com.lcl.utils;
 
+import org.apache.hc.client5.http.HttpResponseException;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -9,6 +10,7 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
@@ -37,8 +39,10 @@ public class HttpClientUtil {
             .setResponseTimeout(Timeout.ofSeconds(30))
             .build();
 
+    /**
+     * Executes a GET request and accepts only HTTP 200, matching the legacy contract.
+     */
     public static String getRequest(String url, Map<String, String> params) {
-        String requestUri = url;
         try {
             HttpGet request = new HttpGet(url);
             URIBuilder builder = new URIBuilder(url);
@@ -48,16 +52,19 @@ public class HttpClientUtil {
                 }
             }
             request.setUri(builder.build());
-            requestUri = request.getRequestUri();
             request.setConfig(REQUEST_CONFIG);
             request.setHeader("User-Agent", USER_AGENT);
 
             try (CloseableHttpClient client = HttpClients.createDefault();
                  CloseableHttpResponse response = client.execute(request)) {
+                if (response.getCode() != HttpStatus.SC_OK) {
+                    throw new HttpResponseException(
+                            response.getCode(), response.getReasonPhrase());
+                }
                 return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             }
         } catch (Exception exception) {
-            throw requestFailure(requestUri, exception);
+            throw requestFailure("GET", exception);
         }
     }
 
@@ -93,7 +100,7 @@ public class HttpClientUtil {
                 return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             }
         } catch (Exception exception) {
-            throw requestFailure(url, exception);
+            throw requestFailure("POST", exception);
         }
     }
 
@@ -113,7 +120,7 @@ public class HttpClientUtil {
                 return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             }
         } catch (Exception exception) {
-            throw requestFailure(url, exception);
+            throw requestFailure("POST", exception);
         }
     }
 
@@ -126,13 +133,16 @@ public class HttpClientUtil {
             } else {
                 addHeaders(request, headers);
             }
+            request.setEntity(
+                    new StringEntity(
+                            json, ContentType.create("application/json", StandardCharsets.UTF_8)));
 
             try (CloseableHttpClient client = HttpClients.createDefault();
                  CloseableHttpResponse response = client.execute(request)) {
                 return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             }
         } catch (Exception exception) {
-            throw requestFailure(url, exception);
+            throw requestFailure("DELETE", exception);
         }
     }
 
@@ -158,7 +168,7 @@ public class HttpClientUtil {
         }
     }
 
-    private static IllegalStateException requestFailure(String requestUri, Exception cause) {
-        return new IllegalStateException("HTTP request failed: " + requestUri, cause);
+    private static IllegalStateException requestFailure(String operation, Exception cause) {
+        return new IllegalStateException("HTTP " + operation + " request failed", cause);
     }
 }

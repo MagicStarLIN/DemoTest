@@ -1,7 +1,5 @@
 package com.lcl.designmodel.composite;
 
-import org.apache.commons.collections4.CollectionUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 

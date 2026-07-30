@@ -1,6 +1,7 @@
 package com.lcl.utils;
 
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -54,7 +55,8 @@ public class DateUtils {
         if(timestmp == null){
             return "";
         }
-        return format(new Date(timestmp), DateTimeFormatter.ofPattern(dateFormat));
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        return formatter.format(new Date(timestmp));
     }
 
 
@@ -81,7 +83,8 @@ public class DateUtils {
         if(date==null){
             return "";
         }
-        return format(date, DateTimeFormatter.ofPattern(dateFormat));
+        SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+        return formatter.format(date);
     }
 
 

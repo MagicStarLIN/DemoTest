@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -17,6 +19,25 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
 
 class DateUtilsTest {
+
+    @Test
+    void timestampPatternUsesLegacySimpleDateFormatGrammar() {
+        long timestamp = ZonedDateTime.of(
+                        2026, 7, 30, 12, 34, 56, 123_000_000, ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli();
+
+        assertEquals("4 0123", DateUtils.getFormatDateStr(timestamp, "u SSSS"));
+    }
+
+    @Test
+    void datePatternUsesLegacySimpleDateFormatGrammar() {
+        Date date = Date.from(ZonedDateTime.of(
+                        2026, 7, 30, 12, 34, 56, 123_000_000, ZoneId.systemDefault())
+                .toInstant());
+
+        assertEquals("4 0123", DateUtils.getFormatDateStr(date, "u SSSS"));
+    }
 
     @Test
     void formatsEpochConsistentlyAcrossConcurrentCalls() throws Exception {
