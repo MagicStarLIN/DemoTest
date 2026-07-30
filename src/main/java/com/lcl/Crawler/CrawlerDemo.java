@@ -1,11 +1,13 @@
 package com.lcl.Crawler;
 
 import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.util.Timeout;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -24,6 +26,13 @@ import java.util.regex.Pattern;
  * @date 2019/10/10 10:28 上午
  */
 public class CrawlerDemo {
+
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+            .setConnectTimeout(Timeout.ofSeconds(30))
+            .setConnectionRequestTimeout(Timeout.ofSeconds(30))
+            .setResponseTimeout(Timeout.ofSeconds(30))
+            .build();
+
     public static void jsonpList(String url) {
         try {
             Document document = Jsoup.connect(url).get();
@@ -40,7 +49,9 @@ public class CrawlerDemo {
 
     public static void httpClientList(String url) {
         HttpGet request = new HttpGet(url);
-        try (CloseableHttpClient client = HttpClients.createDefault();
+        try (CloseableHttpClient client = HttpClients.custom()
+                .setDefaultRequestConfig(REQUEST_CONFIG)
+                .build();
              CloseableHttpResponse response = client.execute(request)) {
             if (response.getCode() == 200) {
                 HttpEntity entity = response.getEntity();

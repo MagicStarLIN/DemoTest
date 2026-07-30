@@ -1,5 +1,6 @@
 package com.lcl.utils;
 
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -7,6 +8,7 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.util.Timeout;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,6 +20,11 @@ public class HttpClientUtils {
 
     private static final PoolingHttpClientConnectionManager CONNECTION_MANAGER =
             new PoolingHttpClientConnectionManager();
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
+            .setConnectTimeout(Timeout.ofSeconds(30))
+            .setConnectionRequestTimeout(Timeout.ofSeconds(30))
+            .setResponseTimeout(Timeout.ofSeconds(30))
+            .build();
     private static final CloseableHttpClient CLIENT;
 
     static {
@@ -26,6 +33,7 @@ public class HttpClientUtils {
         CLIENT = HttpClients.custom()
                 .setConnectionManager(CONNECTION_MANAGER)
                 .setConnectionManagerShared(true)
+                .setDefaultRequestConfig(REQUEST_CONFIG)
                 .build();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

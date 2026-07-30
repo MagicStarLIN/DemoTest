@@ -38,8 +38,9 @@ public class HttpClientUtil {
             .build();
 
     public static String getRequest(String url, Map<String, String> params) {
-        HttpGet request = new HttpGet(url);
+        String requestUri = url;
         try {
+            HttpGet request = new HttpGet(url);
             URIBuilder builder = new URIBuilder(url);
             if (params != null) {
                 for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -47,6 +48,7 @@ public class HttpClientUtil {
                 }
             }
             request.setUri(builder.build());
+            requestUri = request.getRequestUri();
             request.setConfig(REQUEST_CONFIG);
             request.setHeader("User-Agent", USER_AGENT);
 
@@ -55,7 +57,7 @@ public class HttpClientUtil {
                 return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             }
         } catch (Exception exception) {
-            throw requestFailure(request.getRequestUri(), exception);
+            throw requestFailure(requestUri, exception);
         }
     }
 
@@ -65,63 +67,72 @@ public class HttpClientUtil {
 
     public static String postRequest(
             String url, Map<String, Object> params, Map<String, Object> headers) {
-        HttpPost request = new HttpPost(url);
-        request.setConfig(REQUEST_CONFIG);
-        if (headers == null || headers.isEmpty()) {
-            request.setHeader("Content-Type", ContentType.APPLICATION_FORM_URLENCODED.toString());
-        } else {
-            addHeaders(request, headers);
-        }
-
-        if (params != null) {
-            List<NameValuePair> parameterList = new ArrayList<>();
-            for (Map.Entry<String, Object> entry : params.entrySet()) {
-                parameterList.add(
-                        new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
+        try {
+            HttpPost request = new HttpPost(url);
+            request.setConfig(REQUEST_CONFIG);
+            if (headers == null || headers.isEmpty()) {
+                request.setHeader(
+                        "Content-Type", ContentType.APPLICATION_FORM_URLENCODED.toString());
+            } else {
+                addHeaders(request, headers);
             }
-            request.setEntity(new UrlEncodedFormEntity(parameterList, StandardCharsets.UTF_8));
-        }
 
-        try (CloseableHttpClient client = HttpClients.createDefault();
-             CloseableHttpResponse response = client.execute(request)) {
-            return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            if (params != null) {
+                List<NameValuePair> parameterList = new ArrayList<>();
+                for (Map.Entry<String, Object> entry : params.entrySet()) {
+                    parameterList.add(
+                            new BasicNameValuePair(
+                                    entry.getKey(), String.valueOf(entry.getValue())));
+                }
+                request.setEntity(
+                        new UrlEncodedFormEntity(parameterList, StandardCharsets.UTF_8));
+            }
+
+            try (CloseableHttpClient client = HttpClients.createDefault();
+                 CloseableHttpResponse response = client.execute(request)) {
+                return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            }
         } catch (Exception exception) {
-            throw requestFailure(request.getRequestUri(), exception);
+            throw requestFailure(url, exception);
         }
     }
 
     public static String postRequestJson(String url, String json, Map<String, Object> headers) {
-        HttpPost request = new HttpPost(url);
-        request.setConfig(REQUEST_CONFIG);
-        if (headers == null || headers.isEmpty()) {
-            request.setHeader("User-Agent", USER_AGENT);
-        } else {
-            addHeaders(request, headers);
-        }
-        request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
+        try {
+            HttpPost request = new HttpPost(url);
+            request.setConfig(REQUEST_CONFIG);
+            if (headers == null || headers.isEmpty()) {
+                request.setHeader("User-Agent", USER_AGENT);
+            } else {
+                addHeaders(request, headers);
+            }
+            request.setEntity(new StringEntity(json, ContentType.APPLICATION_JSON));
 
-        try (CloseableHttpClient client = HttpClients.createDefault();
-             CloseableHttpResponse response = client.execute(request)) {
-            return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            try (CloseableHttpClient client = HttpClients.createDefault();
+                 CloseableHttpResponse response = client.execute(request)) {
+                return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            }
         } catch (Exception exception) {
-            throw requestFailure(request.getRequestUri(), exception);
+            throw requestFailure(url, exception);
         }
     }
 
     public static String deleteRequestJson(String url, String json, Map<String, Object> headers) {
-        HttpDelete request = new HttpDelete(url);
-        request.setConfig(REQUEST_CONFIG);
-        if (headers == null || headers.isEmpty()) {
-            request.setHeader("User-Agent", USER_AGENT);
-        } else {
-            addHeaders(request, headers);
-        }
+        try {
+            HttpDelete request = new HttpDelete(url);
+            request.setConfig(REQUEST_CONFIG);
+            if (headers == null || headers.isEmpty()) {
+                request.setHeader("User-Agent", USER_AGENT);
+            } else {
+                addHeaders(request, headers);
+            }
 
-        try (CloseableHttpClient client = HttpClients.createDefault();
-             CloseableHttpResponse response = client.execute(request)) {
-            return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            try (CloseableHttpClient client = HttpClients.createDefault();
+                 CloseableHttpResponse response = client.execute(request)) {
+                return EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+            }
         } catch (Exception exception) {
-            throw requestFailure(request.getRequestUri(), exception);
+            throw requestFailure(url, exception);
         }
     }
 
