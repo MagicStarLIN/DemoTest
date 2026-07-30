@@ -1,6 +1,5 @@
 package com.lcl.utils;
 
-import com.alibaba.excel.util.CollectionUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -114,7 +113,7 @@ public class HttpClientUtil {
 					.setConnectTimeout(300*1000).setConnectionRequestTimeout(60*1000)
 					.setSocketTimeout(300*1000).build();
 			httpPost.setConfig(requestConfig);
-			if (CollectionUtils.isEmpty(headers)) {
+			if (headers == null || headers.isEmpty()) {
 				httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
 			} else {
 				Iterator iterator = headers.entrySet().iterator();
@@ -169,7 +168,7 @@ public class HttpClientUtil {
 					.setConnectTimeout(300 * 1000).setConnectionRequestTimeout(60 * 1000)
 					.setSocketTimeout(300 * 1000).build();
 			httpPost.setConfig(requestConfig);
-			if (CollectionUtils.isEmpty(headers)) {
+			if (headers == null || headers.isEmpty()) {
 				httpPost.setHeader("User-Agent",
 						"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
 			} else {
@@ -209,7 +208,7 @@ public class HttpClientUtil {
 					.setConnectTimeout(300 * 1000).setConnectionRequestTimeout(60 * 1000)
 					.setSocketTimeout(300 * 1000).build();
 			httpDelete.setConfig(requestConfig);
-			if (CollectionUtils.isEmpty(headers)) {
+			if (headers == null || headers.isEmpty()) {
 				httpDelete.setHeader("User-Agent",
 						"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36");
 			} else {
