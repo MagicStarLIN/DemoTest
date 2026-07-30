@@ -1,5 +1,6 @@
 package com.lcl.test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -16,7 +17,7 @@ public class Test8 {
 
 
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in, StandardCharsets.UTF_8);
         String[] element = sc.next().split(",");
         element[0] = element[0].substring(1);
         element[element.length-1] = element[element.length-1].replace("]","");
@@ -30,8 +31,8 @@ public class Test8 {
         }
     }
 
-    private String handleNumbers(String numbs) {
-        String[] index = numbs.split(".");
+    String handleNumbers(String numbs) {
+        String[] index = numbs.split("\\.", -1);
         String result = "";
         int level = index[0].length();
         if (level == 1) {

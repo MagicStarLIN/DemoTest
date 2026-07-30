@@ -8,7 +8,7 @@ package com.lcl.designmodel.simpleFactory;
  */
 public class ShapeFactory {
     public static Shape getShape(String shapeType) {
-        if (shapeType == null || shapeType == "") {
+        if (shapeType == null || shapeType.isBlank()) {
             return null;
         }
         if (shapeType.equalsIgnoreCase("circle")) {

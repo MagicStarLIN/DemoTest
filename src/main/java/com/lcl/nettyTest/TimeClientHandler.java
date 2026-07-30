@@ -2,19 +2,19 @@ package com.lcl.nettyTest;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Logger;
 
-public class TimeClientHandler extends ChannelHandlerAdapter {
+public class TimeClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
     private static final Logger logger = Logger.getLogger(TimeClientHandler.class.getName());
 
     private final ByteBuf firstMessage;
 
     public TimeClientHandler() {
-        byte[] req = "QUERY TIME ORDER".getBytes();
+        byte[] req = "QUERY TIME ORDER".getBytes(StandardCharsets.UTF_8);
         firstMessage = Unpooled.buffer(req.length);
         firstMessage.writeBytes(req);
     }
@@ -25,8 +25,7 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) {
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
 

@@ -8,6 +8,7 @@ import com.lmax.disruptor.dsl.ProducerType;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author liuchanglin
@@ -17,19 +18,19 @@ import java.util.concurrent.Executors;
  * @date 2023/5/28 16:10
  */
 public class TestDisruptorDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Disruptor<TestEvent> disruptor = new Disruptor<>(
                 TestEvent::new,
                 1024 * 1024,
                 Executors.defaultThreadFactory(),
-                ProducerType.SINGLE,
+                ProducerType.MULTI,
                 new YieldingWaitStrategy()
         );
 //        disruptor.handleEventsWith(new TestEventHandler());
 //        多消费者 重复消费
 //        disruptor.handleEventsWith(new TestEventHandler(), new TestEventHandler());
-//        多消费者 只消费一次
-        disruptor.handleEventsWithWorkerPool(new TestEventHandler(), new TestEventHandler());
+//        Disruptor 4 removed worker pools; one handler preserves one consumption per event.
+        disruptor.handleEventsWith(new TestEventHandler());
         disruptor.start();
         RingBuffer<TestEvent> ringBuffer = disruptor.getRingBuffer();
         TestEventProducer eventProducer = new TestEventProducer(ringBuffer);
@@ -37,8 +38,17 @@ public class TestDisruptorDemo {
 
 //        多个生产者
         ExecutorService fixedThreadPool = Executors.newFixedThreadPool(100);
-        for (int i = 0; i < 100; i++) {
-            fixedThreadPool.execute(() -> eventProducer.onData(UUID.randomUUID().toString()));
+        try {
+            for (int i = 0; i < 100; i++) {
+                fixedThreadPool.execute(() -> eventProducer.onData(UUID.randomUUID().toString()));
+            }
+            fixedThreadPool.shutdown();
+            if (!fixedThreadPool.awaitTermination(1, TimeUnit.MINUTES)) {
+                fixedThreadPool.shutdownNow();
+            }
+        } finally {
+            fixedThreadPool.shutdownNow();
+            disruptor.shutdown();
         }
     }
 }

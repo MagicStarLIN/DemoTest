@@ -2,15 +2,14 @@ package com.lcl.nettyTest;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.nio.charset.StandardCharsets;
 
-public class TimeServerHandler extends ChannelHandlerAdapter {
+public class TimeServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ByteBuf buf = (ByteBuf) msg;
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) {
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
         String body = new String(req, StandardCharsets.UTF_8);
@@ -18,7 +17,7 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
 
         String currentTime = "QUERY TIME ORDER".equalsIgnoreCase(body) ?
                 new java.util.Date(System.currentTimeMillis()).toString() : "BAD ORDER";
-        ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes());
+        ByteBuf resp = Unpooled.copiedBuffer(currentTime.getBytes(StandardCharsets.UTF_8));
         ctx.write(resp);
     }
 

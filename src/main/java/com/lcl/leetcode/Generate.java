@@ -1,9 +1,7 @@
 package com.lcl.leetcode;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * LeetCode 118. 杨辉三角
@@ -56,11 +54,6 @@ public class Generate {
 
 
     public static void main(String[] args) {
-        int[] array = new int[]{};
-        array[0] = 1;
-        System.out.println(Arrays.toString(array));
-
         System.out.println(new Generate().solution(5).toString());
-        ;
     }
 }
