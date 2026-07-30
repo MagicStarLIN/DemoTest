@@ -1,62 +1,34 @@
 package com.lcl.io;
 
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
- * @author liuchanglin
- * @version 1.0
- * @ClassName: TestNIO
- * @Description: testNIO
- * @date 2019-08-19 14:49
+ * Demonstrates UTF-8 text IO using caller-supplied paths.
  */
-public class TestNIO {
-    public static void testread() {
-        //[1]获取通道
-        try {
-            FileInputStream fileInputStream = new FileInputStream("/Users/liuchanglin/Magic/test.txt");
-            FileChannel fileChannel = fileInputStream.getChannel();
-            //[2]创建缓冲区
-            ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-            //[3]将数据从通道读到缓冲区
-            int result = fileChannel.read(byteBuffer);
-                byteBuffer.flip();
-                System.out.println(StandardCharsets.UTF_8.decode(byteBuffer));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void testwrite() {
-        try {
-            //[1]获取通道
-            FileOutputStream fileOutputStream = new FileOutputStream("/Users/liuchanglin/Magic/test.txt");
-            FileChannel fileChannel = fileOutputStream.getChannel();
-            //[2]获取缓冲区
-            ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+public final class TestNIO {
 
-            String message = "lcl";
-            byte[] bytesmessage = message.getBytes(StandardCharsets.UTF_8);
-            for (int i = 0; i < bytesmessage.length; i++) {
-                byteBuffer.put(bytesmessage[i]);
-            }
-            byteBuffer.flip();
-            //[3]写入到通道
-            fileChannel.write(byteBuffer);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private TestNIO() {
     }
 
-    public static void main(String[] args) {
-        testwrite();
+    public static String read(Path path) throws IOException {
+        return Files.readString(path, StandardCharsets.UTF_8);
+    }
+
+    public static void write(Path path, String content) throws IOException {
+        Files.writeString(path, content, StandardCharsets.UTF_8);
+    }
+
+    public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.err.println("Usage: TestNIO <path>");
+            return;
+        }
+
+        Path path = Path.of(args[0]);
+        write(path, "学习 Java 21");
+        System.out.println(read(path));
     }
 }
