@@ -1,10 +1,5 @@
 package com.lcl.utils;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,33 +22,14 @@ public final class ImageUtil {
      * Draws a red rectangle on a black background.
      */
     public static void drawImage(Path output) throws IOException {
-        BufferedImage image = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = image.createGraphics();
-        try {
-            graphics.setColor(Color.RED);
-            graphics.setStroke(new BasicStroke(1f));
-            graphics.fillRect(128, 128, IMAGE_SIZE, IMAGE_SIZE);
-        } finally {
-            graphics.dispose();
-        }
-        writePng(image, output);
+        writePng(newRedRectangleImage(), output);
     }
 
     /**
-     * Draws a red rectangle using an alpha composite.
+     * Draws a red rectangle on a black background.
      */
     public static void drawImage1(Path output) throws IOException {
-        BufferedImage image = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = image.createGraphics();
-        try {
-            graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 1.0f));
-            graphics.setColor(Color.RED);
-            graphics.setStroke(new BasicStroke(1f));
-            graphics.fillRect(128, 128, IMAGE_SIZE, IMAGE_SIZE);
-        } finally {
-            graphics.dispose();
-        }
-        writePng(image, output);
+        writePng(newRedRectangleImage(), output);
     }
 
     /**
@@ -62,12 +38,7 @@ public final class ImageUtil {
     public static void drawTransparent(Path input, Path output) throws IOException {
         BufferedImage source = readImage(input);
         BufferedImage transparentImage = newTransparentImage();
-        Graphics2D graphics = transparentImage.createGraphics();
-        try {
-            graphics.drawImage(source, 0, 0, IMAGE_SIZE / 2 - 1, IMAGE_SIZE, null);
-        } finally {
-            graphics.dispose();
-        }
+        copyScaled(source, transparentImage, IMAGE_SIZE / 2 - 1, IMAGE_SIZE);
         writePng(transparentImage, output);
     }
 
@@ -81,13 +52,32 @@ public final class ImageUtil {
     }
 
     private static BufferedImage newTransparentImage() {
-        BufferedImage temporary = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
-        Graphics2D graphics = temporary.createGraphics();
-        try {
-            return graphics.getDeviceConfiguration().createCompatibleImage(
-                    IMAGE_SIZE, IMAGE_SIZE, Transparency.TRANSLUCENT);
-        } finally {
-            graphics.dispose();
+        return new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_ARGB);
+    }
+
+    private static BufferedImage newRedRectangleImage() {
+        BufferedImage image = new BufferedImage(IMAGE_SIZE, IMAGE_SIZE, BufferedImage.TYPE_INT_RGB);
+        for (int y = IMAGE_SIZE / 2; y < IMAGE_SIZE; y++) {
+            for (int x = IMAGE_SIZE / 2; x < IMAGE_SIZE; x++) {
+                image.setRGB(x, y, 0xffff0000);
+            }
+        }
+        return image;
+    }
+
+    private static void copyScaled(
+            BufferedImage source, BufferedImage destination, int width, int height) {
+        // Match Graphics2D's nearest-neighbor/SrcOver result without initializing
+        // a platform graphics device.
+        for (int y = 0; y < height; y++) {
+            int sourceY =
+                    (int) ((2L * y + 1) * source.getHeight() / (2L * height));
+            for (int x = 0; x < width; x++) {
+                int sourceX =
+                        (int) ((2L * x + 1) * source.getWidth() / (2L * width));
+                int pixel = source.getRGB(sourceX, sourceY);
+                destination.setRGB(x, y, pixel >>> 24 == 0 ? 0 : pixel);
+            }
         }
     }
 
