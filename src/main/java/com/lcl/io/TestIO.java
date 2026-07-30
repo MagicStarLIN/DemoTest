@@ -1,21 +1,27 @@
 package com.lcl.io;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 /**
- * @author liuchanglin
- * @version 1.0
- * @ClassName: TestIO
- * @Description: IO
- * @date 2019-08-19 14:04
+ * Demonstrates listing a caller-supplied directory.
  */
-public class TestIO {
-    public static void main(String[] args) {
-        File file = new File("/Users/liuchanglin/Magic");
-        String[] list;
-        list = file.list();
-        for (String s : list) {
-            System.out.println(s);
+public final class TestIO {
+
+    private TestIO() {
+    }
+
+    public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.err.println("Usage: TestIO <directory>");
+            return;
+        }
+
+        try (Stream<Path> entries = Files.list(Path.of(args[0]))) {
+            entries.map(Path::getFileName)
+                    .forEach(System.out::println);
         }
     }
 }

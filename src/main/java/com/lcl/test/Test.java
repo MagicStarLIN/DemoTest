@@ -1,35 +1,30 @@
 package com.lcl.test;
 
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Date;
 
 /**
- * @author liuchanglin
- * @version 1.0
- * @ClassName: Test
- * @date 2019/11/14 8:42 下午
+ * Miscellaneous language and file-copy demonstrations.
  */
 public class Test {
     volatile String lcl = "lcl";
 
-    private static String path = "/Users/admin/tempFile";
     private static void testMethod() {
-         int i = 1;
+        int i = 1;
         int[] arr = {1, 2, 3, 4};
 //        changeArr(arr);
         System.err.println(Arrays.toString(arr));
     }
+
     private static void changeArr(int i) {
 //        arr = {4, 3, 2, 1};
         i = 2;
     }
-//
+
 //    private static void testMethod2() {
 //        Student student = new Student("lcl", "1", 0);
 //        changeStudent();
@@ -41,30 +36,19 @@ public class Test {
         return s.substring(16 + str.length());
     }
 
-    public static void main(String[] args) {
-        File newFile = new File(path +"/12312"+ "/lcl.txt");
-
-        try {
-            FileUtils.copyInputStreamToFile(new FileInputStream(path + "/txtEdit.txt"), newFile);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static void main(String[] args) throws IOException {
+        if (args.length < 2) {
+            System.err.println("Usage: Test <source-file> <destination-file>");
+            return;
         }
 
-    }
-    private static File copyFile(InputStream inputStream, File destFile) throws IOException {
-        if (null == inputStream) {
-            return null;
+        Path source = Path.of(args[0]);
+        Path destination = Path.of(args[1]);
+        Path parent = destination.getParent();
+        if (parent != null) {
+            Files.createDirectories(parent);
         }
-        if (!destFile.exists()) {
-            if (!destFile.getParentFile().exists()) {
-                destFile.getParentFile().mkdir();
-            }
-            destFile.createNewFile();
-        }
-        FileUtils.copyInputStreamToFile(inputStream, destFile);
-        return destFile;
+        Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
     }
 
     private static int compareDate(Date d1, Date d2) {
@@ -76,5 +60,4 @@ public class Test {
     private static long modLong(long temp) {
         return temp % 10;
     }
-
 }
