@@ -38,7 +38,7 @@ public class TreeTest {
 
         services.postOrderNoRecursive(root);
 
-//        services.DeleteNode(9,root);
+//        root = services.deleteNode(9, root);
 //        services.preOrder(root);
 
 

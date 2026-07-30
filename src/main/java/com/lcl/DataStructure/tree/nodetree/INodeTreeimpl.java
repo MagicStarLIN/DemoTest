@@ -22,12 +22,11 @@ public class INodeTreeimpl implements INodeTree {
         //查找操作
         Node current = root;
         while (current != null) {
-            if (current.data > key) {
+            if (key < current.data) {
                 current = current.leftChild;
-            }
-            if (current.data < key) {
+            } else if (key > current.data) {
                 current = current.rightChild;
-            }else {
+            } else {
                 return current;
             }
         }
@@ -35,99 +34,61 @@ public class INodeTreeimpl implements INodeTree {
     }
 
     @Override
-    public boolean InsertNode(int key,Node root) {
+    public Node insertNode(int key, Node root) {
         //插入操作
-        Node newNdoe = new Node(key);
-        Node current = root;
         if (root == null) {
-            root = newNdoe;
-            return true;
-        } else {
-            while (current != null) {
-                if (current.data > key) {
-                    current = current.leftChild;
-                    if(current == null) {
-                        current = newNdoe;
-                        return true;
-                    }
-                } else {
-                    current = current.rightChild;
-                    if (current == null) {
-                        current = newNdoe;
-                        return true;
-                    }
+            return new Node(key);
+        }
+
+        Node current = root;
+        while (true) {
+            if (key < current.data) {
+                if (current.leftChild == null) {
+                    current.leftChild = new Node(key);
+                    return root;
                 }
+                current = current.leftChild;
+            } else if (key > current.data) {
+                if (current.rightChild == null) {
+                    current.rightChild = new Node(key);
+                    return root;
+                }
+                current = current.rightChild;
+            } else {
+                return root;
             }
         }
-        return false;
     }
 
     @Override
-    public boolean DeleteNode(int key,Node root) {
-        //删除操作
-        Node current = root;
-        Node parent = root;
-        boolean isLeftChild = false;
-        //[1]找到需要删除的节点
-        while (current.data != key) {
-            parent = current;
-            if (current.data > key) {
-                current = current.leftChild;
-                isLeftChild = true;
-            } else {
-                current = current.rightChild;
-                isLeftChild = false;
-            }
-            if (current == null) {
-                return false;
-            }
+    public Node deleteNode(int key, Node root) {
+        if (root == null) {
+            return null;
         }
-        //[2]删除操作第一种情况，需要删除的节点没有子节点
-        if (current.leftChild == null && current.rightChild == null) {
-            if (isLeftChild) {
-                parent.leftChild = null;
-            } else {
-                parent.rightChild = null;
+        if (key < root.data) {
+            root.leftChild = deleteNode(key, root.leftChild);
+        } else if (key > root.data) {
+            root.rightChild = deleteNode(key, root.rightChild);
+        } else {
+            if (root.leftChild == null) {
+                return root.rightChild;
             }
+            if (root.rightChild == null) {
+                return root.leftChild;
+            }
+            Node successor = minimum(root.rightChild);
+            root.data = successor.data;
+            root.rightChild = deleteNode(successor.data, root.rightChild);
+        }
+        return root;
+    }
 
+    private Node minimum(Node root) {
+        Node current = root;
+        while (current.leftChild != null) {
+            current = current.leftChild;
         }
-        //[3]删除操作第二种情况，需要删除的节点有一个子节点
-        if (current.leftChild == null && current.rightChild != null) {
-            if (current == root) {
-                root = current.rightChild;
-            } else if (isLeftChild) {
-                parent.leftChild = current.rightChild;
-            } else {
-                parent.rightChild = current.rightChild;
-            }
-            return true;
-        }
-        if (current.leftChild != null && current.rightChild == null) {
-            if (current == root) {
-                root = current.leftChild;
-            } else if (isLeftChild) {
-                parent.leftChild = current.leftChild;
-            } else {
-                parent.rightChild = current.leftChild;
-            }
-            return true;
-        }
-        //[4]删除操作第三种情况，需要删除的节点有两个子节点
-        //将被删除节点的右子树中的最小节点与其替换
-        if (current.leftChild != null && current.rightChild != null) {
-            //4.1 找到右子树中的最小节点
-            Node minNode = current.rightChild;
-            Node minNodeparent = current;
-            while (minNode != null) {
-                minNodeparent = minNode;
-                minNode = minNode.leftChild;
-            }
-            //4.2 进行替换
-            current.data = minNode.data;
-            minNodeparent.leftChild = null;
-            return true;
-        }
-        return false;
+        return current;
     }
 
     @Override

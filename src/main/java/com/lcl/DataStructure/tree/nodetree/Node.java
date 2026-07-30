@@ -16,6 +16,18 @@ public class Node {
         this.data = data;
     }
 
+    public int getData() {
+        return data;
+    }
+
+    public Node getLeftChild() {
+        return leftChild;
+    }
+
+    public Node getRightChild() {
+        return rightChild;
+    }
+
     public void display() {
         System.out.println(data);
     }

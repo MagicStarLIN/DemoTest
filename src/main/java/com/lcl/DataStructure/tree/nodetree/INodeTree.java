@@ -5,10 +5,10 @@ public interface INodeTree {
     Node findNode(int key,Node root);
 
     //删除节点
-    boolean DeleteNode(int key,Node root);
+    Node deleteNode(int key, Node root);
 
     //新增节点
-    boolean InsertNode(int key,Node root);
+    Node insertNode(int key, Node root);
 
     //前序遍历
     void preOrder(Node root);
