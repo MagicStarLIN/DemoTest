@@ -1,7 +1,7 @@
 package com.lcl.designmodel.producerAndConsumer;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * @author liuchanglin
@@ -13,7 +13,7 @@ public class Test {
     private final static int CAPACITY = 5;
 
     public static void main(String[] args) {
-        Queue<Integer> queue = new LinkedList<Integer>();
+        BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(CAPACITY);
 
         Thread pro1 = new Producer(queue,"P-1",CAPACITY);
         Thread pro2 = new Producer(queue,"P-2",CAPACITY);

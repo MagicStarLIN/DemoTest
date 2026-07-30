@@ -1,7 +1,7 @@
 package com.lcl.designmodel.producerAndConsumer;
 
-import java.util.Queue;
-import java.util.Random;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author liuchanglin
@@ -11,38 +11,23 @@ import java.util.Random;
  * @date 2019-07-17 15:08
  */
 public class Consumer extends Thread {
-    private Queue<Integer> queue;
-    String name;
-    int maxSize;
+    private final BlockingQueue<Integer> queue;
 
-    public Consumer(Queue<Integer> queue, String name, int maxSize) {
+    public Consumer(BlockingQueue<Integer> queue, String name, int maxSize) {
+        super(name);
         this.queue = queue;
-        this.name = name;
-        this.maxSize = maxSize;
     }
 
     @Override
     public void run() {
-        while (true) {
-            synchronized (queue) {
-                while (queue.isEmpty()) {
-                        System.out.println("Queue is empty, Consumer[" + name + "] thread is waiting for Producer");
-                    try {
-                        queue.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-                int x = queue.poll();
-                System.out.println("[" + name + "] Consuming value : " + x);
-                queue.notifyAll();
-
-                try {
-                    Thread.sleep(new Random().nextInt(1000));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+        while (!isInterrupted()) {
+            try {
+                int value = queue.take();
+                System.out.println("[" + getName() + "] Consuming value : " + value);
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000));
+            } catch (InterruptedException interrupted) {
+                interrupt();
+                return;
             }
         }
     }
