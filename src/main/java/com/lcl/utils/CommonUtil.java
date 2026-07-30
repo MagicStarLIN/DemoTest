@@ -4,15 +4,29 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigInteger;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Objects;
 
 @Slf4j
 public class CommonUtil {
 
-    public static final DecimalFormat DF_5 = new DecimalFormat("00000");
-    public static final SimpleDateFormat SDF_YMD = new SimpleDateFormat("yyyyMMdd");
-    public static final SimpleDateFormat SDF_HM = new SimpleDateFormat("HHmm");
+    private static final DateTimeFormatter YMD_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter HM_FORMATTER = DateTimeFormatter.ofPattern("HHmm");
+
+    public static String formatFiveDigits(int value) {
+        return String.format(Locale.ROOT, "%05d", value);
+    }
+
+    public static String formatYmd(Date date) {
+        return YMD_FORMATTER.format(Objects.requireNonNull(date).toInstant().atZone(ZoneId.systemDefault()));
+    }
+
+    public static String formatHm(Date date) {
+        return HM_FORMATTER.format(Objects.requireNonNull(date).toInstant().atZone(ZoneId.systemDefault()));
+    }
 
     public static String getMathIP(String ip) {
         if (StringUtils.isNotBlank(ip)) {

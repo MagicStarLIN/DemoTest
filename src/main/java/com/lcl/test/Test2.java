@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class Test2 {
     public static String getDateDirPath(Date date, String type) {
-        String time = CommonUtil.SDF_HM.format(date);
+        String time = CommonUtil.formatHm(date);
         String time1 = time.substring(0, 3);
         int time2 = Integer.parseInt(time.substring(3, 4));
         if (0 <= time2 && time2 < 5) {
@@ -24,7 +24,7 @@ public class Test2 {
         } else {
             time2 = 5;
         }
-        return "BASE_PATH" + File.separator + type + File.separator + CommonUtil.SDF_YMD.format(date) + time1 + time2 + File.separator;
+        return "BASE_PATH" + File.separator + type + File.separator + CommonUtil.formatYmd(date) + time1 + time2 + File.separator;
     }
     // TODO: 2020/11/25  date  hh-mm-ss.SSS 00:00:00.000
     private static Date getBeforeTodayWithStep(int timeStep) {

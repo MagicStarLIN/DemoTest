@@ -1,9 +1,12 @@
 package com.lcl.utils;
 
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,33 +18,31 @@ import java.util.Date;
  * @version 1.0
  */
 public class DateUtils {
-    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final DateTimeFormatter DATE8_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter DATE13_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS");
+    private static final DateTimeFormatter DATE10_FORMATTER =
+            DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 
     public static String getNowFormatDateStr(){
-        return SDF.format(new Date());
+        return DATE_TIME_FORMATTER.format(Instant.now().atZone(ZoneId.systemDefault()));
     }
 
     public static String getFormatDateStr(Long timestmp){
         if(timestmp == null){
             return "";
         }
-        return SDF.format(new Date(timestmp));
+        return format(new Date(timestmp), DATE_TIME_FORMATTER);
     }
 
     public static Date getFormatDate(Date date){
         if(date == null){
             return new Date();
         }
-        Date parse;
-        try {
-            String format = SDF.format(new Date());
-            parse = SDF.parse(format);
-        }catch (Exception e){
-            e.printStackTrace();
-            parse = new Date();
-        }
-
-        return parse;
+        return Date.from(Instant.now().truncatedTo(ChronoUnit.SECONDS));
     }
 
     /**
@@ -53,8 +54,7 @@ public class DateUtils {
         if(timestmp == null){
             return "";
         }
-        SimpleDateFormat SDF = new SimpleDateFormat(dateFormat);
-        return SDF.format(new Date(timestmp));
+        return format(new Date(timestmp), DateTimeFormatter.ofPattern(dateFormat));
     }
 
 
@@ -68,7 +68,7 @@ public class DateUtils {
         if(date==null){
             return "";
         }
-        return SDF.format(date);
+        return format(date, DATE_TIME_FORMATTER);
     }
 
 
@@ -81,8 +81,7 @@ public class DateUtils {
         if(date==null){
             return "";
         }
-        SimpleDateFormat SDF = new SimpleDateFormat(dateFormat);
-        return SDF.format(date);
+        return format(date, DateTimeFormatter.ofPattern(dateFormat));
     }
 
 
@@ -93,7 +92,7 @@ public class DateUtils {
      */
     public static String getFormatEpochStr(int num){
         long time = num*1000L;
-        return SDF.format(new Date(time));
+        return format(new Date(time), DATE_TIME_FORMATTER);
     }
 
     /**
@@ -103,13 +102,12 @@ public class DateUtils {
      * @return
      */
     public static Date parseDateFromDateStr(String formatStr){
-        Date date;
         try{
-            date = SDF.parse(formatStr);
+            LocalDateTime localDateTime = LocalDateTime.parse(formatStr, DATE_TIME_FORMATTER);
+            return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
         } catch (Exception exp){
-            date = new Date();
+            return new Date();
         }
-        return date;
     }
 
     /**
@@ -180,17 +178,10 @@ public class DateUtils {
      * 比较两个时间的大小
      */
     public static int compareDate(String DATE1, String DATE2) {
-        DateFormat df = new SimpleDateFormat("HH:mm:ss");
         try {
-            Date dt1 = df.parse(DATE1);
-            Date dt2 = df.parse(DATE2);
-            if (dt1.getTime() > dt2.getTime()) {
-                return 1;
-            } else if (dt1.getTime() < dt2.getTime()) {
-                return -1;
-            } else {
-                return 0;
-            }
+            LocalTime time1 = LocalTime.parse(DATE1, TIME_FORMATTER);
+            LocalTime time2 = LocalTime.parse(DATE2, TIME_FORMATTER);
+            return Integer.signum(time1.compareTo(time2));
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -206,14 +197,13 @@ public class DateUtils {
      * @return
      */
     public static Date StringToDate(String datetime){
-        SimpleDateFormat sdFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date = new Date();
         try {
-            date = sdFormat.parse(datetime);
-        } catch (ParseException e) {
+            LocalDateTime localDateTime = LocalDateTime.parse(datetime, DATE_TIME_FORMATTER);
+            return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+        } catch (Exception e) {
             e.printStackTrace();
+            return new Date();
         }
-        return date;
     }
 
     /**
@@ -226,8 +216,7 @@ public class DateUtils {
         if (date == null) {
             return 0;
         } else {
-            DateFormat df = new SimpleDateFormat(pattern);
-            return Integer.parseInt(df.format(date));
+            return Integer.parseInt(format(date, DateTimeFormatter.ofPattern(pattern)));
         }
     }
 
@@ -236,14 +225,15 @@ public class DateUtils {
     }
 
     public static String getDate13() {
-        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-        return df.format(new Date());
+        return DATE13_FORMATTER.format(Instant.now().atZone(ZoneId.systemDefault()));
     }
 
 
     public static String getDate10() {
-        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-        return df.format(new Date());
+        return DATE10_FORMATTER.format(Instant.now().atZone(ZoneId.systemDefault()));
     }
 
+    private static String format(Date date, DateTimeFormatter formatter) {
+        return formatter.format(date.toInstant().atZone(ZoneId.systemDefault()));
+    }
 }
