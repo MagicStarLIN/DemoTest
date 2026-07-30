@@ -3,6 +3,7 @@ package com.lcl.Socket.nioSocket;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.InetSocketAddress;
+import java.nio.channels.CancelledKeyException;
 import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -56,6 +57,10 @@ public class ReactorTask implements Runnable, AutoCloseable {
             }
         } catch (ClosedSelectorException ignored) {
             // close() wakes and terminates the selector loop.
+        } catch (CancelledKeyException failure) {
+            if (selector.isOpen()) {
+                throw failure;
+            }
         } catch (IOException failure) {
             if (selector.isOpen()) {
                 throw new UncheckedIOException(failure);
