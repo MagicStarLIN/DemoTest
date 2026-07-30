@@ -13,7 +13,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,43 +41,48 @@ public class CrawlerDemo {
                 String detailTitle = element.ownText();
                 System.err.println("详情页链接：" + detailUrl + " ,详情页标题：" + detailTitle);
             }
-        } catch (IOException exception) {
-            throw new IllegalStateException("Crawler request failed: " + url, exception);
+        } catch (Exception exception) {
+            throw requestFailure(exception);
         }
     }
 
     public static void httpClientList(String url) {
-        HttpGet request = new HttpGet(url);
         try (CloseableHttpClient client = HttpClients.custom()
                 .setDefaultRequestConfig(REQUEST_CONFIG)
-                .build();
-             CloseableHttpResponse response = client.execute(request)) {
-            if (response.getCode() == 200) {
-                HttpEntity entity = response.getEntity();
-                String body = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-                if (body != null) {
-                    Pattern whitespace = Pattern.compile("\\t|\\r|\\n");
-                    Matcher whitespaceMatcher = whitespace.matcher(body);
-                    body = whitespaceMatcher.replaceAll("");
-                    Pattern itemPattern = Pattern.compile(
-                            "<div class=\"list-hd\">\\s* <h4>\\s* "
-                                    + "<a href=\"(.*?)\"\\s* target=\"_blank\">(.*?)</a>\\s* "
-                                    + "</h4>\\s* </div>");
-                    Matcher itemMatcher = itemPattern.matcher(body);
-                    while (itemMatcher.find()) {
-                        System.err.println(
-                                "详情页链接：" + itemMatcher.group(1)
-                                        + " ,详情页标题：" + itemMatcher.group(2));
+                .build()) {
+            HttpGet request = new HttpGet(url);
+            try (CloseableHttpResponse response = client.execute(request)) {
+                if (response.getCode() == 200) {
+                    HttpEntity entity = response.getEntity();
+                    String body = EntityUtils.toString(entity, StandardCharsets.UTF_8);
+                    if (body != null) {
+                        Pattern whitespace = Pattern.compile("\\t|\\r|\\n");
+                        Matcher whitespaceMatcher = whitespace.matcher(body);
+                        body = whitespaceMatcher.replaceAll("");
+                        Pattern itemPattern = Pattern.compile(
+                                "<div class=\"list-hd\">\\s* <h4>\\s* "
+                                        + "<a href=\"(.*?)\"\\s* target=\"_blank\">(.*?)</a>\\s* "
+                                        + "</h4>\\s* </div>");
+                        Matcher itemMatcher = itemPattern.matcher(body);
+                        while (itemMatcher.find()) {
+                            System.err.println(
+                                    "详情页链接：" + itemMatcher.group(1)
+                                            + " ,详情页标题：" + itemMatcher.group(2));
+                        }
+                    } else {
+                        System.err.println("获取正文内容为空");
                     }
                 } else {
-                    System.err.println("获取正文内容为空");
+                    System.err.println("处理失败，返回状态码为" + response.getCode());
                 }
-            } else {
-                System.err.println("处理失败，返回状态码为" + response.getCode());
             }
         } catch (Exception exception) {
-            throw new IllegalStateException("Crawler request failed: " + url, exception);
+            throw requestFailure(exception);
         }
+    }
+
+    private static IllegalStateException requestFailure(Exception cause) {
+        return new IllegalStateException("Crawler request failed", cause);
     }
 
     public static void main(String[] args) {

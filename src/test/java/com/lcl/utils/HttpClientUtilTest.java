@@ -37,6 +37,10 @@ class HttpClientUtilTest {
         server.createContext("/json", exchange -> respond(exchange, requestBody(exchange)));
         server.createContext("/delete", HttpClientUtilTest::respondWithContentTypeAndBody);
         server.createContext("/status-500", exchange -> respond(exchange, 500, "server error"));
+        server.createContext("/status-204", exchange -> {
+            exchange.sendResponseHeaders(204, -1);
+            exchange.close();
+        });
         server.createContext("/truncated", this::respondWithTruncatedBody);
         server.start();
         baseUrl = "http://localhost:" + server.getAddress().getPort();
@@ -90,6 +94,16 @@ class HttpClientUtilTest {
         HttpResponseException cause =
                 assertInstanceOf(HttpResponseException.class, failure.getCause());
         assertEquals(500, cause.getStatusCode());
+    }
+
+    @Test
+    void getRequestRejectsNon200SuccessStatus() {
+        IllegalStateException failure = assertThrows(IllegalStateException.class,
+                () -> HttpClientUtil.getRequest(baseUrl + "/status-204", Map.of()));
+
+        HttpResponseException cause =
+                assertInstanceOf(HttpResponseException.class, failure.getCause());
+        assertEquals(204, cause.getStatusCode());
     }
 
     @Test
