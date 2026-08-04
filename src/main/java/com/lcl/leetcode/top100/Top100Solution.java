@@ -1,7 +1,6 @@
 package com.lcl.leetcode.top100;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author liuchanglin
@@ -602,6 +601,153 @@ public class Top100Solution {
             prefixSum.put(sum, prefixSum.getOrDefault(sum, 0) + 1);
         }
         return ans;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(new Top100Solution().maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3));
+    }
+
+    /**
+     * @Title maxSlidingWindow
+     * @Description <a href="https://leetcode.cn/problems/sliding-window-maximum/?envType=study-plan-v2&envId=top-100-liked">239. 滑动窗口最大值</a>
+     * @Author liuchanglin
+     * @Date 2026/8/4 20:04
+     * @Param [nums, k]
+     * @return int[]
+     **/
+    public int[] maxSlidingWindow(int[] nums, int k) {
+
+        int left = 0;
+        int right = k - 1;
+
+        List<int[]> heap = new ArrayList<>();
+        int heapSize = 0;
+
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            heapSize = offerHeap(heap, heapSize, nums[i], i);
+
+            if (heapSize >= k) {
+                while (true) {
+                    int[] maxPos = heap.get(0);
+                    int currentIndex = maxPos[1];
+                    if (currentIndex <= right && currentIndex >= left) {
+                        result.add(maxPos[0]);
+                        break;
+                    } else {
+                        heapSize = removeHead(heap, heapSize);
+                    }
+                }
+            }
+
+            if (heapSize >= k) {
+                left++;
+                right++;
+            }
+        }
+
+        return result.stream()
+                .mapToInt(Integer::intValue)
+                .toArray();
+
+
+    }
+
+    private int offerHeap(List<int[]> heap, int size, int num, int index) {
+        int[] numAndIndex = new int[]{num, index};
+        heap.add(numAndIndex);
+        // sift up  上浮
+        siftUp(heap, size);
+        size++;
+        return size;
+    }
+
+    private void siftUp(List<int[]> heap, int size) {
+        while (size > 0) {
+            int parentIndex = (size - 1) / 2;
+            if (heap.get(parentIndex)[0] < heap.get(size)[0]) {
+                swap(heap, size, parentIndex);
+            } else {
+                break;
+            }
+            size = parentIndex;
+        }
+    }
+
+    private static void swap(List<int[]> heap, int aIndex, int bIndex) {
+        int[] temp = heap.get(bIndex);
+        heap.set(bIndex, heap.get(aIndex));
+        heap.set(aIndex, temp);
+    }
+
+    private void siftDown(List<int[]> heap, int index, int size) {
+        while (true) {
+            int left = index * 2 + 1;
+            int right = index * 2 + 2;
+            int largest = index;
+
+            if (left < size && heap.get(left)[0] > heap.get(largest)[0]) {
+                largest = left;
+            }
+
+            if (right < size && heap.get(right)[0] > heap.get(largest)[0]) {
+                largest = right;
+            }
+
+            if (largest == index) {
+                break;
+            }
+
+            swap(heap, largest, index);
+            index = largest;
+        }
+    }
+
+
+    private int removeHead(List<int[]> heap, int heapSize) {
+        heap.set(0, heap.get(heapSize - 1));
+        heap.removeLast();
+        heapSize--;
+        if (heapSize > 0) {
+            siftDown(heap, 0, heapSize);
+        }
+        return heapSize;
+    }
+
+    public int[] maxSlidingWindowV2(int[] nums, int k) {
+        List<Integer> result = new ArrayList<>();
+
+        Deque<Integer> deque = new LinkedList<>();
+
+        for (int i = 0; i < k; i++) {
+            while (!deque.isEmpty()
+                    && nums[deque.peekLast()] <= nums[i]) {
+                deque.pollLast();
+            }
+
+            deque.addLast(i);
+        }
+
+        result.add(nums[deque.peekFirst()]);
+
+        for (int i = k; i < nums.length; i++) {
+
+            while (!deque.isEmpty() && nums[deque.peekLast()] <= nums[i]) {
+                deque.pollLast();
+            }
+
+            if (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+                deque.pollFirst();
+            }
+            deque.addLast(i);
+            result.add(nums[deque.peekFirst()]);
+
+        }
+
+        return result.stream().mapToInt(Integer::intValue)
+                .toArray();
     }
 
 }
