@@ -564,6 +564,44 @@ public class Top100Solution {
         return ans;
     }
 
+    /**
+     * @return int
+     * @Title subarraySum
+     * @Description <a href="https://leetcode.cn/problems/subarray-sum-equals-k/description/?envType=study-plan-v2&envId=top-100-liked">560. 和为 K 的子数组</a>
+     * @Author liuchanglin
+     * @Date 2026/7/31 00:39
+     * @Param [nums, k]
+     **/
+    public int subarraySum(int[] nums, int k) {
+        int ans = 0;
+        for (int start = 0; start < nums.length; start++) {
+            int res = k;
+            int end = start;
+            while (end < nums.length) {
+                res -= nums[end];
+                if (res == 0) {
+                    ans++;
+                }
+                end++;
+            }
+        }
+        return ans;
+    }
 
+    // 前缀和概念
+    public int subarraySumV2(int[] nums, int k) {
+        int ans = 0;
+        HashMap<Integer, Integer> prefixSum = new HashMap<>();
+        prefixSum.put(0, 1);
+        int sum = 0;
+        for (int start = 0; start < nums.length; start++) {
+            sum += nums[start];
+            if (prefixSum.containsKey(sum - k)) {
+                ans += prefixSum.get(sum - k);
+            }
+            prefixSum.put(sum, prefixSum.getOrDefault(sum, 0) + 1);
+        }
+        return ans;
+    }
 
 }
