@@ -750,4 +750,71 @@ public class Top100Solution {
                 .toArray();
     }
 
+
+    /**
+     * @Title minWindow
+     * @Description <a href="https://leetcode.cn/problems/minimum-window-substring/?envType=study-plan-v2&envId=top-100-liked">76. 最小覆盖子串</a>
+     * @Author liuchanglin
+     * @Date 2026/8/5 20:25
+     * @Param [s, t]
+     * @return java.lang.String
+     **/
+    public String minWindow(String s, String t) {
+
+        if (s == null || t == null || t.isEmpty() || s.length() < t.length()) {
+            return "";
+        }
+
+        Map<Character, Integer> tMap = new HashMap<>();
+
+        for (char c : t.toCharArray()) {
+            int count = tMap.getOrDefault(c, 0);
+            tMap.put(c, count + 1);
+        }
+
+        int left = 0;
+        int right = 0;
+
+        int valid = 0;
+
+        int start = 0;
+
+        Map<Character, Integer> sMap = new HashMap<>();
+        int minLen = Integer.MAX_VALUE;
+
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            right++;
+
+            if (tMap.containsKey(c)) {
+                int count = sMap.getOrDefault(c, 0) + 1;
+                sMap.put(c, count);
+                if (count <= tMap.get(c)) {
+                    valid++;
+                }
+            }
+
+            while (valid == t.length()) {
+                char d = s.charAt(left);
+                if (minLen > right - left) {
+                    start = left;
+                    minLen = Math.min(right - left, minLen);
+                }
+                left++;
+                if (tMap.containsKey(d)) {
+                    int count = sMap.get(d);
+                    if (count <= tMap.get(d)) {
+                        valid--;
+                    }
+                    sMap.put(d, count - 1);
+                }
+            }
+
+        }
+        return minLen == Integer.MAX_VALUE
+                ? ""
+                : s.substring(start, start + minLen);
+
+    }
+
 }
