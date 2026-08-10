@@ -603,10 +603,6 @@ public class Top100Solution {
         return ans;
     }
 
-    public static void main(String[] args) {
-        System.out.println(new Top100Solution().maxSlidingWindow(new int[]{1, 3, -1, -3, 5, 3, 6, 7}, 3));
-    }
-
     /**
      * @Title maxSlidingWindow
      * @Description <a href="https://leetcode.cn/problems/sliding-window-maximum/?envType=study-plan-v2&envId=top-100-liked">239. 滑动窗口最大值</a>
@@ -816,5 +812,219 @@ public class Top100Solution {
                 : s.substring(start, start + minLen);
 
     }
+
+
+    /**
+     * @Title maxSubArray
+     * @Description <a href="https://leetcode.cn/problems/maximum-subarray/?envType=study-plan-v2&envId=top-100-liked">53. 最大子数组和</a>
+     * @Author liuchanglin
+     * @Date 2026/8/6 02:14
+     * @Param [nums]
+     * @return int
+     **/
+    public int maxSubArray(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int res = 0;
+            for (int j = i; j < nums.length; j++) {
+                res += nums[j];
+                max = Math.max(res, max);
+            }
+        }
+        return max;
+
+    }
+    // TODO 动态规划法
+
+    /**
+     * @Title merge
+     * @Description <a href="https://leetcode.cn/problems/merge-intervals/?envType=study-plan-v2&envId=top-100-liked">56. 合并区间</a>
+     * @Author liuchanglin
+     * @Date 2026/8/6 18:33
+     * @Param [intervals]
+     * @return int[][]
+     **/
+    public int[][] merge(int[][] intervals) {
+        if (intervals == null || intervals.length == 0) {
+            return new int[0][];
+        }
+
+        // 按照左端点排序
+        Arrays.sort(intervals, Comparator.comparingInt(interval -> interval[0]));
+
+        List<int[]> result = new ArrayList<>();
+
+        int start = intervals[0][0];
+        int end = intervals[0][1];
+
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] <= end) {
+                end = Math.max(intervals[i][1], end);
+            } else {
+                result.add(new int[]{start, end});
+                start = intervals[i][0];
+                end = intervals[i][1];
+            }
+
+        }
+
+        result.add(new int[]{start, end});
+
+        return result.toArray(new int[result.size()][]);
+
+    }
+
+    /**
+     * @return void
+     * @Title rotate
+     * @Description <a href="https://leetcode.cn/problems/rotate-array/?envType=study-plan-v2&envId=top-100-liked">189. 轮转数组</a>
+     * @Author liuchanglin
+     * @Date 2026/8/6 19:39
+     * @Param [nums, k]
+     **/
+    public boolean rotate(int[] nums, int k) {
+        if (k == nums.length) {
+            return false;
+        }
+
+        k %= nums.length; // nums[1,2] k = 7 这种情况下 先把 k 转换成“有效移动次数”
+        List<Integer> tail = new ArrayList<>();
+        List<Integer> head = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i < nums.length - k) {
+                tail.add(nums[i]);
+            } else {
+                head.add(nums[i]);
+            }
+        }
+        int tailIndex = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i < head.size()) {
+                nums[i] = head.get(i);
+            } else {
+                nums[i] = tail.get(tailIndex);
+                tailIndex++;
+            }
+        }
+        return false;
+    }
+
+    // 三次反转法
+    public void rotateV2(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+
+        if (k == 0) {
+            return;
+        }
+
+        // 1. 整体反转
+        reverse(nums, 0, n - 1);
+
+        // 2. 反转前 k 个元素
+        reverse(nums, 0, k - 1);
+
+        // 3. 反转后 n-k 个元素
+        reverse(nums, k, n - 1);
+    }
+
+    private void reverse(int[] nums, int left, int right) {
+        while (left < right) {
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+
+            left++;
+            right--;
+        }
+    }
+
+
+    /**
+     * @Title productExceptSelf
+     * @Description <a href="https://leetcode.cn/problems/product-of-array-except-self/?envType=study-plan-v2&envId=top-100-liked">238. 除了自身以外数组的乘积</a>
+     * @Author liuchanglin
+     * @Date 2026/8/6 20:25
+     * @Param [nums]
+     * @return int[]
+     **/
+    public int[] productExceptSelf(int[] nums) {
+        Map<Integer, Integer> prePro = new HashMap<>();
+        Map<Integer, Integer> sufPro = new HashMap<>();
+
+        int pro = 1;
+        int index = 1;
+        for (int i = 0; i < nums.length; i++) {
+            pro *= nums[i];
+            prePro.put(index, pro);
+            index++;
+        }
+
+        pro = 1;
+        index = 1;
+        for (int i = nums.length - 1; i > -1; i--) {
+            pro *= nums[i];
+            sufPro.put(index, pro);
+            index++;
+        }
+
+        int[] result = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            result[i] = sufPro.getOrDefault(nums.length - i - 1, 1) * prePro.getOrDefault(i, 1);
+        }
+        return result;
+    }
+
+
+    public int[] productExceptSelfV2(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+
+        // result[i] 暂时保存 nums[i] 左侧所有元素的乘积
+        result[0] = 1;
+        for (int i = 1; i < n; i++) {
+            result[i] = result[i - 1] * nums[i - 1];
+        }
+
+        // suffix 保存当前位置右侧所有元素的乘积
+        int suffix = 1;
+
+        for (int i = n - 1; i >= 0; i--) {
+            result[i] *= suffix;
+            suffix *= nums[i];
+        }
+
+        return result;
+    }
+
+    /**
+     * @Title firstMissingPositive
+     * @Description <a href="https://leetcode.cn/problems/first-missing-positive/description/?envType=study-plan-v2&envId=top-100-liked">41. 缺失的第一个正数</a>
+     * @Author liuchanglin
+     * @Date 2026/8/7 21:05
+     * @Param [nums]
+     * @return int
+     **/
+    public int firstMissingPositive(int[] nums) {
+        for (int i = 0; i < nums.length; i++) {
+            while (nums[i] <= nums.length && nums[i] >= 1 && nums[nums[i] - 1] != nums[i]) {
+                int target = nums[i] - 1;
+
+                int temp = nums[i];
+                nums[i] = nums[target];
+                nums[target] = temp;
+            }
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                return i + 1;
+            }
+        }
+
+        return nums.length + 1;
+    }
+
 
 }
