@@ -1026,5 +1026,28 @@ public class Top100Solution {
         return nums.length + 1;
     }
 
+    public void setZeroes(int[][] matrix) {
+        List<int[]> list = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (matrix[i][j] == 0) {
+                    list.add(new int[]{i, j});
+                }
+            }
+        }
+
+        for (int[] ints : list) {
+            int x = ints[0];
+            int y = ints[1];
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][y] = 0;
+            }
+            for (int i = 0; i < matrix[x].length; i++) {
+                matrix[x][i] = 0;
+            }
+
+        }
+
+    }
 
 }
