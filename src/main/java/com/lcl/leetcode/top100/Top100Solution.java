@@ -1058,4 +1058,66 @@ public class Top100Solution {
 
     }
 
+    /**
+     * @Title spiralOrder
+     * @Description <a href="https://leetcode.cn/problems/spiral-matrix/?envType=study-plan-v2&envId=top-100-liked">54. 螺旋矩阵</a>
+     * @Author liuchanglin
+     * @Date 2026/8/15 01:56
+     * @Param [matrix]
+     * @return java.util.List<java.lang.Integer>
+     **/
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int direction = 1;
+        int x = 0;
+        int y = 0;
+
+        int m = matrix[0].length;
+        int n = matrix.length;
+
+        int right = m - 1;
+        int bottom = n - 1;
+        int top = 0;
+        int left = 0;
+
+        int total = m * n;
+
+        List<Integer> result = new ArrayList<>();
+        result.add(matrix[0][0]);
+
+        while (result.size() < total) {
+            int trueDirection = direction % 4;
+
+            if (trueDirection == 1) {
+                y++;
+            } else if (trueDirection == 2) {
+                x++;
+            } else if (trueDirection == 3) {
+                y--;
+            } else {
+                x--;
+            }
+
+            if (y > right || y < left || x > bottom || x < top) {
+                if (y > right) {
+                    y = y - 1;
+                    top++;
+                } else if (y < left) {
+                    y = y + 1;
+                    bottom--;
+                }else if (x > bottom) {
+                    x = x - 1;
+                    right--;
+                }else if (x < top) {
+                    x = x + 1;
+                    left++;
+                }
+                direction++;
+                continue;
+            }
+            result.add(matrix[x][y]);
+        }
+
+        return result;
+    }
+
 }
