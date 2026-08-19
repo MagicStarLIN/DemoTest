@@ -604,12 +604,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return int[]
      * @Title maxSlidingWindow
      * @Description <a href="https://leetcode.cn/problems/sliding-window-maximum/?envType=study-plan-v2&envId=top-100-liked">239. 滑动窗口最大值</a>
      * @Author liuchanglin
      * @Date 2026/8/4 20:04
      * @Param [nums, k]
-     * @return int[]
      **/
     public int[] maxSlidingWindow(int[] nums, int k) {
 
@@ -748,12 +748,12 @@ public class Top100Solution {
 
 
     /**
+     * @return java.lang.String
      * @Title minWindow
      * @Description <a href="https://leetcode.cn/problems/minimum-window-substring/?envType=study-plan-v2&envId=top-100-liked">76. 最小覆盖子串</a>
      * @Author liuchanglin
      * @Date 2026/8/5 20:25
      * @Param [s, t]
-     * @return java.lang.String
      **/
     public String minWindow(String s, String t) {
 
@@ -815,12 +815,12 @@ public class Top100Solution {
 
 
     /**
+     * @return int
      * @Title maxSubArray
      * @Description <a href="https://leetcode.cn/problems/maximum-subarray/?envType=study-plan-v2&envId=top-100-liked">53. 最大子数组和</a>
      * @Author liuchanglin
      * @Date 2026/8/6 02:14
      * @Param [nums]
-     * @return int
      **/
     public int maxSubArray(int[] nums) {
         int max = Integer.MIN_VALUE;
@@ -837,12 +837,12 @@ public class Top100Solution {
     // TODO 动态规划法
 
     /**
+     * @return int[][]
      * @Title merge
      * @Description <a href="https://leetcode.cn/problems/merge-intervals/?envType=study-plan-v2&envId=top-100-liked">56. 合并区间</a>
      * @Author liuchanglin
      * @Date 2026/8/6 18:33
      * @Param [intervals]
-     * @return int[][]
      **/
     public int[][] merge(int[][] intervals) {
         if (intervals == null || intervals.length == 0) {
@@ -942,12 +942,12 @@ public class Top100Solution {
 
 
     /**
+     * @return int[]
      * @Title productExceptSelf
      * @Description <a href="https://leetcode.cn/problems/product-of-array-except-self/?envType=study-plan-v2&envId=top-100-liked">238. 除了自身以外数组的乘积</a>
      * @Author liuchanglin
      * @Date 2026/8/6 20:25
      * @Param [nums]
-     * @return int[]
      **/
     public int[] productExceptSelf(int[] nums) {
         Map<Integer, Integer> prePro = new HashMap<>();
@@ -999,12 +999,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return int
      * @Title firstMissingPositive
      * @Description <a href="https://leetcode.cn/problems/first-missing-positive/description/?envType=study-plan-v2&envId=top-100-liked">41. 缺失的第一个正数</a>
      * @Author liuchanglin
      * @Date 2026/8/7 21:05
      * @Param [nums]
-     * @return int
      **/
     public int firstMissingPositive(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
@@ -1027,12 +1027,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return void
      * @Title setZeroes
      * @Description <a href="https://leetcode.cn/problems/set-matrix-zeroes/?envType=study-plan-v2&envId=top-100-liked">73. 矩阵置零</a>
      * @Author liuchanglin
      * @Date 2026/8/14 15:41
      * @Param [matrix]
-     * @return void
      **/
     public void setZeroes(int[][] matrix) {
         List<int[]> list = new ArrayList<>();
@@ -1059,12 +1059,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return java.util.List<java.lang.Integer>
      * @Title spiralOrder
      * @Description <a href="https://leetcode.cn/problems/spiral-matrix/?envType=study-plan-v2&envId=top-100-liked">54. 螺旋矩阵</a>
      * @Author liuchanglin
      * @Date 2026/8/15 01:56
      * @Param [matrix]
-     * @return java.util.List<java.lang.Integer>
      **/
     public List<Integer> spiralOrder(int[][] matrix) {
         int direction = 1;
@@ -1104,10 +1104,10 @@ public class Top100Solution {
                 } else if (y < left) {
                     y = y + 1;
                     bottom--;
-                }else if (x > bottom) {
+                } else if (x > bottom) {
                     x = x - 1;
                     right--;
-                }else if (x < top) {
+                } else if (x < top) {
                     x = x + 1;
                     left++;
                 }
@@ -1118,6 +1118,220 @@ public class Top100Solution {
         }
 
         return result;
+    }
+
+    /**
+     * @return void
+     * @Title rotate
+     * @Description <a href="https://leetcode.cn/problems/rotate-image/?envType=study-plan-v2&envId=top-100-liked">48. 旋转图像</a>
+     * @Author liuchanglin
+     * @Date 2026/8/17 18:06
+     * @Param [matrix]
+     **/
+    public void rotate(int[][] matrix) {
+
+        int n = matrix.length;
+        int deep = 0;
+
+        int maxDeep = n / 2;
+
+        while (deep <= maxDeep) {
+            int i = deep;
+            int j = deep;
+
+            while (j < n - 1 - deep) {
+                int i1 = j;
+                int j1 = n - 1 - i;
+                int temp1 = matrix[i1][j1];
+                matrix[i1][j1] = matrix[i][j];
+
+                int i2 = j1;
+                int j2 = n - 1 - i1;
+                int temp2 = matrix[i2][j2];
+                matrix[i2][j2] = temp1;
+
+                int i3 = j2;
+                int j3 = n - 1 - i2;
+                int temp3 = matrix[i3][j3];
+                matrix[i3][j3] = temp2;
+
+                matrix[i][j] = temp3;
+
+
+                j++;
+            }
+            deep++;
+
+        }
+
+    }
+
+    /**
+     * @return void
+     * @Title rotate
+     * @Description <a href="https://leetcode.cn/problems/search-a-2d-matrix-ii/description/?envType=study-plan-v2&envId=top-100-liked">240. 搜索二维矩阵 II</a>
+     * @Author liuchanglin
+     * @Date 2026/8/17 18:27
+     * @Param [matrix]
+     **/
+    // 从右上角开始判断
+    public boolean searchMatrix(int[][] matrix, int target) {
+
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+
+        int i = 0;
+        int j = n - 1;
+
+        while (i < m && j >= 0) {
+            int current = matrix[i][j];
+            if (target == current) {
+                return true;
+            }
+
+            if (current > target) {
+                j--;
+            } else {
+                i++;
+            }
+
+        }
+        return false;
+    }
+
+    // Definition for singly-linked list.
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+            next = null;
+        }
+    }
+
+    /**
+     * @Title getIntersectionNode
+     * @Description <a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/?envType=study-plan-v2&envId=top-100-liked">160. 相交链表</a>
+     * @Author liuchanglin
+     * @Date 2026/8/17 19:11
+     * @Param [headA, headB]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        ListNode A = headA;
+        ListNode B = headB;
+
+        while (A != B) {
+            if (A == null) {
+                A = headB;
+            } else {
+                A = A.next;
+            }
+            if (B == null) {
+                B = headA;
+            } else {
+                B = B.next;
+            }
+        }
+        return A;
+    }
+
+    /**
+     * @Title reverseList
+     * @Description TODO
+     * @Author liuchanglin
+     * @Date 2026/8/17 20:21
+     * @Param [head]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode reverseList(ListNode head) {
+
+        if (head == null) {
+            return null;
+        }
+        ListNode headNode = head;
+        ListNode current = head.next;
+        ListNode nexNode;
+
+        while (current != null) {
+            nexNode = current.next;
+            current.next = headNode;
+            headNode = current;
+            current = nexNode;
+        }
+
+        head.next = null;
+        return headNode;
+
+    }
+
+
+    /**
+     * @Title isPalindrome
+     * @Description <a href="https://leetcode.cn/problems/palindrome-linked-list/?envType=study-plan-v2&envId=top-100-liked">234. 回文链表</a>
+     * @Author liuchanglin
+     * @Date 2026/8/17 20:29
+     * @Param [head]
+     * @return boolean
+     **/
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode preNode = null;
+        ListNode current = head;
+        ListNode next;
+
+        while (current != slow) {
+            next = current.next;
+            current.next = preNode;
+            preNode = current;
+            current = next;
+        }
+
+        if (fast != null) {
+            slow = slow.next;
+        }
+        while (preNode != null) {
+            if (slow.val != preNode.val) {
+                return false;
+            }
+            slow = slow.next;
+            preNode = preNode.next;
+        }
+        return true;
+    }
+
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return false;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == slow) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
