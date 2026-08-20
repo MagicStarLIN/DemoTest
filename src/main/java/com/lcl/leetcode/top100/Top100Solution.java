@@ -1205,10 +1205,14 @@ public class Top100Solution {
         int val;
         ListNode next;
 
+        ListNode() {}
+
         ListNode(int x) {
             val = x;
             next = null;
         }
+
+        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
     }
 
     /**
@@ -1334,4 +1338,220 @@ public class Top100Solution {
         return false;
     }
 
+    /**
+     * @Title detectCycle
+     * @Description <a href="https://leetcode.cn/problems/linked-list-cycle-ii/?envType=study-plan-v2&envId=top-100-liked">142. 环形链表 II</a>
+     * @Author liuchanglin
+     * @Date 2026/8/19 19:49
+     * @Param [head]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (fast == slow) {
+                ListNode ptr = slow;
+                while (ptr != slow) {
+                    ptr = ptr.next;
+                    slow = slow.next;
+                }
+                return ptr;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @Title mergeTwoLists
+     * @Description <a href="https://leetcode.cn/problems/merge-two-sorted-lists/?envType=study-plan-v2&envId=top-100-liked">21. 合并两个有序链表</a>
+     * @Author liuchanglin
+     * @Date 2026/8/19 20:11
+     * @Param [list1, list2]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode node1;
+        ListNode node2;
+
+        ListNode head;
+
+        if (list1 == null && list2 == null) {
+            return null;
+        } else if (list1 == null) {
+            return list2;
+        } else if (list2 == null) {
+            return list1;
+        }
+
+        if (list1.val > list2.val) {
+            head = new ListNode(list2.val);
+            node1  = list1;
+            node2 = list2.next;
+        } else {
+            head = new ListNode(list1.val);
+            node1 = list1.next;
+            node2 = list2;
+
+        }
+
+        ListNode current = head;
+
+        while (node1 != null || node2 != null) {
+            if (node1 == null || node2 == null) {
+                if (node1 == null) {
+                    current.next = node2;
+                    node2 = node2.next;
+                } else {
+                    current.next = node1;
+                    node1 = node1.next;
+                }
+            } else {
+                if (node1.val > node2.val) {
+                    current.next = node2;
+                    node2 = node2.next;
+                } else {
+                    current.next = node1;
+                    node1 = node1.next;
+                }
+            }
+
+            current = current.next;
+        }
+
+        return head;
+    }
+
+
+    /**
+     * @Title addTwoNumbers
+     * @Description <a href="https://leetcode.cn/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-100-liked">2. 两数相加</a>
+     * @Author liuchanglin
+     * @Date 2026/8/19 22:07
+     * @Param [l1, l2]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+
+        ListNode result = new ListNode();
+        ListNode current = result;
+        boolean flag = false;
+        while (l1 != null || l2 != null || flag) {
+
+            int val;
+
+            if (l1 != null && l2 != null) {
+                val = l1.val + l2.val;
+            } else if (l1 == null && l2 != null) {
+                val = l2.val;
+            } else if (l1 != null && l2 == null){
+                val = l1.val;
+            } else {
+                val = 0;
+            }
+
+            if (flag) val++;
+
+            if (val >= 10) {
+                current.val = val % 10;
+                flag = true;
+            } else {
+                current.val = val;
+                flag = false;
+            }
+
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
+
+            if (l1 != null || l2 != null || flag) {
+                current.next = new ListNode();
+                current = current.next;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * @Title removeNthFromEnd
+     * @Description <a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/?envType=study-plan-v2&envId=top-100-liked">19. 删除链表的倒数第 N 个结点</a>
+     * @Author liuchanglin
+     * @Date 2026/8/20 01:29
+     * @Param [head, n]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode nNode = head;
+        for (int i = 0; i < n; i++) {
+            nNode = nNode.next;
+        }
+
+        // 删除的是头节点
+        if (nNode == null) {
+            return head.next;
+        }
+
+        ListNode target = head;
+        while (nNode.next != null) {
+            target = target.next;
+            nNode = nNode.next;
+        }
+
+        target.next = target.next.next;
+        return head;
+
+    }
+
+    /**
+     * @Title swapPairs
+     * @Description <a href="https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked">24. 两两交换链表中的节点</a>
+     * @Author liuchanglin
+     * @Date 2026/8/20 01:45
+     * @Param [head]
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     **/
+    public ListNode swapPairs(ListNode head) {
+
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode pre = head;
+        ListNode current = head.next;
+        ListNode next = head.next.next;
+        ListNode preTail = null; // ！！
+
+        ListNode newHead = current;
+
+        while (current != null) {
+            current.next = pre;
+            pre.next = next;
+            if (preTail != null) {
+                preTail.next = current;
+            }
+            preTail = pre;
+
+            pre = next;
+            if (pre != null) {
+                current = pre.next;
+
+                if (current != null) {
+                    next = current.next;
+                } else {
+                    next = null;
+                }
+            } else {
+                current = null;
+            }
+        }
+
+        return newHead;
+
+    }
 }
