@@ -1205,23 +1205,27 @@ public class Top100Solution {
         int val;
         ListNode next;
 
-        ListNode() {}
+        ListNode() {
+        }
 
         ListNode(int x) {
             val = x;
             next = null;
         }
 
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
     }
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title getIntersectionNode
      * @Description <a href="https://leetcode.cn/problems/intersection-of-two-linked-lists/?envType=study-plan-v2&envId=top-100-liked">160. 相交链表</a>
      * @Author liuchanglin
      * @Date 2026/8/17 19:11
      * @Param [headA, headB]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) {
@@ -1246,12 +1250,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title reverseList
      * @Description TODO
      * @Author liuchanglin
      * @Date 2026/8/17 20:21
      * @Param [head]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode reverseList(ListNode head) {
 
@@ -1276,12 +1280,12 @@ public class Top100Solution {
 
 
     /**
+     * @return boolean
      * @Title isPalindrome
      * @Description <a href="https://leetcode.cn/problems/palindrome-linked-list/?envType=study-plan-v2&envId=top-100-liked">234. 回文链表</a>
      * @Author liuchanglin
      * @Date 2026/8/17 20:29
      * @Param [head]
-     * @return boolean
      **/
     public boolean isPalindrome(ListNode head) {
         if (head == null || head.next == null) {
@@ -1339,12 +1343,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title detectCycle
      * @Description <a href="https://leetcode.cn/problems/linked-list-cycle-ii/?envType=study-plan-v2&envId=top-100-liked">142. 环形链表 II</a>
      * @Author liuchanglin
      * @Date 2026/8/19 19:49
      * @Param [head]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode detectCycle(ListNode head) {
         if (head == null || head.next == null || head.next.next == null) {
@@ -1370,12 +1374,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title mergeTwoLists
      * @Description <a href="https://leetcode.cn/problems/merge-two-sorted-lists/?envType=study-plan-v2&envId=top-100-liked">21. 合并两个有序链表</a>
      * @Author liuchanglin
      * @Date 2026/8/19 20:11
      * @Param [list1, list2]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         ListNode node1;
@@ -1393,7 +1397,7 @@ public class Top100Solution {
 
         if (list1.val > list2.val) {
             head = new ListNode(list2.val);
-            node1  = list1;
+            node1 = list1;
             node2 = list2.next;
         } else {
             head = new ListNode(list1.val);
@@ -1431,12 +1435,12 @@ public class Top100Solution {
 
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title addTwoNumbers
      * @Description <a href="https://leetcode.cn/problems/add-two-numbers/description/?envType=study-plan-v2&envId=top-100-liked">2. 两数相加</a>
      * @Author liuchanglin
      * @Date 2026/8/19 22:07
      * @Param [l1, l2]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
 
@@ -1451,7 +1455,7 @@ public class Top100Solution {
                 val = l1.val + l2.val;
             } else if (l1 == null && l2 != null) {
                 val = l2.val;
-            } else if (l1 != null && l2 == null){
+            } else if (l1 != null && l2 == null) {
                 val = l1.val;
             } else {
                 val = 0;
@@ -1479,12 +1483,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title removeNthFromEnd
      * @Description <a href="https://leetcode.cn/problems/remove-nth-node-from-end-of-list/?envType=study-plan-v2&envId=top-100-liked">19. 删除链表的倒数第 N 个结点</a>
      * @Author liuchanglin
      * @Date 2026/8/20 01:29
      * @Param [head, n]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode nNode = head;
@@ -1509,12 +1513,12 @@ public class Top100Solution {
     }
 
     /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      * @Title swapPairs
      * @Description <a href="https://leetcode.cn/problems/swap-nodes-in-pairs/description/?envType=study-plan-v2&envId=top-100-liked">24. 两两交换链表中的节点</a>
      * @Author liuchanglin
      * @Date 2026/8/20 01:45
      * @Param [head]
-     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
      **/
     public ListNode swapPairs(ListNode head) {
 
@@ -1552,6 +1556,234 @@ public class Top100Solution {
         }
 
         return newHead;
+
+    }
+
+    /**
+     * @return com.lcl.leetcode.top100.Top100Solution.ListNode
+     * 🌟🌟🌟🌟🌟
+     * @Title reverseKGroup
+     * @Description <a href="https://leetcode.cn/problems/reverse-nodes-in-k-group/?envType=study-plan-v2&envId=top-100-liked">25. K 个一组翻转链表</a>
+     * @Author liuchanglin
+     * @Date 2026/8/20 19:42
+     * @Param [head, k]
+     **/
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null) {
+            return null;
+        }
+        ListNode hair = new ListNode();
+        hair.next = head;
+        ListNode pre = hair;
+
+        ListNode start = head;
+
+
+        while (start != null) {
+            ListNode end = start;
+            for (int i = 0; i < k; i++) {
+                if (end == null) {
+                    return hair.next;
+                }
+                end = end.next;
+            }
+
+            ListNode last = reverseListNode(start, end);
+
+            start.next = end;
+            pre.next = last;
+
+            pre = start;
+            start = end;
+
+        }
+
+        return hair.next;
+
+
+    }
+
+    private ListNode reverseListNode(ListNode start, ListNode end) {
+        ListNode pre = start;
+        ListNode current = start.next;
+        ListNode next;
+        while (current != end) {
+            next = current.next;
+            current.next = pre;
+            pre = current;
+
+            current = next;
+        }
+        return pre;
+    }
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    /**
+     * @return java.util.List<java.lang.Integer>
+     * @Title inorderTraversal
+     * @Description <a href="https://leetcode.cn/problems/binary-tree-inorder-traversal/submissions/743614117/?envType=study-plan-v2&envId=top-100-liked">94. 二叉树的中序遍历</a>
+     * @Author liuchanglin
+     * @Date 2026/8/21 00:10
+     * @Param [root]
+     **/
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        result.addAll(inorderTraversal(root.left));
+        result.add(root.val);
+        result.addAll(inorderTraversal(root.right));
+
+        return result;
+
+    }
+
+    /**
+     * @return int
+     * @Title maxDepth
+     * @Description <a href="https://leetcode.cn/problems/maximum-depth-of-binary-tree/?envType=study-plan-v2&envId=top-100-liked">104. 二叉树的最大深度</a>
+     * @Author liuchanglin
+     * @Date 2026/8/21 00:10
+     * @Param [root]
+     **/
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+
+    /**
+     * @return com.lcl.leetcode.top100.Top100Solution.TreeNode
+     * @Title invertTree
+     * @Description <a href="https://leetcode.cn/problems/invert-binary-tree/?envType=study-plan-v2&envId=top-100-liked">226. 翻转二叉树</a>
+     * @Author liuchanglin
+     * @Date 2026/8/21 00:13
+     * @Param [root]
+     **/
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+        TreeNode left = invertTree(root.left);
+        TreeNode right = invertTree(root.right);
+
+        root.left = right;
+        root.right = left;
+
+        return root;
+
+    }
+
+    /**
+     * @return boolean
+     * @Title isSymmetric
+     * @Description <a href="https://leetcode.cn/problems/symmetric-tree/?envType=study-plan-v2&envId=top-100-liked">101. 对称二叉树</a>
+     * @Author liuchanglin
+     * @Date 2026/8/21 00:38
+     * @Param [root]
+     **/
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        return isMirrot(root.left, root.right);
+    }
+
+    private boolean isMirrot(TreeNode left, TreeNode right) {
+        if (left == null) {
+            return right == null;
+        }
+        if (right == null) {
+            return left == null;
+        }
+        return left.val == right.val && isMirrot(left.left, right.right) && isMirrot(left.right, right.left);
+    }
+
+
+    /**
+     * @return java.util.List<java.util.List<java.lang.Integer>>
+     * @Title levelOrder
+     * @Description <a href="https://leetcode.cn/problems/binary-tree-level-order-traversal/?envType=study-plan-v2&envId=top-100-liked">102. 二叉树的层序遍历</a>
+     * @Author liuchanglin
+     * @Date 2026/8/21 00:59
+     * @Param [root]
+     **/
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<>();
+        }
+
+        List<List<Integer>> res = new ArrayList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            int conut = queue.size();
+            List<Integer> tempList = new ArrayList<>();
+            while (conut > 0) {
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+
+                tempList.add(node.val);
+                conut--;
+            }
+            res.add(tempList);
+
+        }
+        return res;
+
+    }
+
+
+    /**
+     * @Title lowestCommonAncestor
+     * @Description <a href="https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked">236. 二叉树的最近公共祖先</a>
+     * @Author liuchanglin
+     * @Date 2026/8/21 02:59
+     * @Param [root, p, q]
+     * @return com.lcl.leetcode.top100.Top100Solution.TreeNode
+     **/
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return left != null ? left : right;
 
     }
 }
