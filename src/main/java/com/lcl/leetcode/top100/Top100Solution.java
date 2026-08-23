@@ -1786,4 +1786,29 @@ public class Top100Solution {
         return left != null ? left : right;
 
     }
+
+    /**
+     * @Title diameterOfBinaryTree
+     * @Description <a href="https://leetcode.cn/problems/diameter-of-binary-tree/description/?envType=study-plan-v2&envId=top-100-liked">543. 二叉树的直径</a>
+     * @Author liuchanglin
+     * @Date 2026/8/24 02:36
+     * @Param [root]
+     * @return int
+     **/
+    int maxDepth;
+    public int diameterOfBinaryTree(TreeNode root) {
+        depth(root);
+        return maxDepth;
+    }
+
+    private int depth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        int l = depth(root.left);
+        int r = depth(root.right);
+
+        maxDepth = Math.max(maxDepth, l + r);
+        return Math.max(l, r) + 1;
+    }
 }
